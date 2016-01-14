@@ -62,7 +62,7 @@ Temporary Items
 sftp-config.json
 
 #qgis
-*.qgis~
+*.qgs~
 
 
 #jekyll
