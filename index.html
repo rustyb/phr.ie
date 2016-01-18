@@ -15,7 +15,7 @@ title:  "PHR.ie"
 	<div class="medium-8 columns">
 	    <div class="blog-post">
 	    	{% for post in site.posts %}
-	    		<h3>{{post.title}} <small>{{post.date}}</small></h3>
+	    		<h3><a href="{{post.url |prepend: site.baseurl}}">{{post.title}} <small>{{post.date}}</small></a></h3>
 	    		<img class="thumbnail" src="{{post.image | prepend: '/img/' | prepend: site.baseurl}}">
 	        	<p>{{post.excerpt}}</p>
 	        	<div class="callout">
