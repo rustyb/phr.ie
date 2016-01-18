@@ -13,3 +13,4 @@ Given the contraction in resources associated in the health sector brought on an
 
 When we look at the spatial distribution of those hitting the older age categories and the patterns projected to arise over the coming decades, one may hypothesise that the demand for services to serve that older population will be most keenly felt in our urban and rural areas. 
 
+![]({{post.image | prepend: '/img/' | prepend: site.baseurl}})
