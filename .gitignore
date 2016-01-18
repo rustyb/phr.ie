@@ -1,3 +1,10 @@
+### foundation
+.DS_Store
+node_modules
+npm-debug.log
+bower_components
+dist
+
 ### windows
 
 # Windows image file caches
