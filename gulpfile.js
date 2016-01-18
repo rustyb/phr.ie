@@ -59,7 +59,7 @@ var PATHS = {
 // Delete the "dist" folder
 // This happens every time a build starts
 gulp.task('clean', function(done) {
-  rimraf('dist', done);
+  rimraf('assets/*', done);
 });
 
 // Browser Sync wrapper task 
@@ -106,7 +106,7 @@ gulp.task('styleguide', function(cb) {
 // In production, the CSS is compressed
 gulp.task('sass', function() {
   var uncss = $.if(isProduction, $.uncss({
-    html: ['src/**/*.html'],
+    html: ['_site/**/*.html'],
     ignore: [
       new RegExp('^meta\..*'),
       new RegExp('^\.is-.*')

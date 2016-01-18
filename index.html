@@ -1,19 +1,33 @@
-<html class="no-js" lang="en">
-<head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="google-site-verification" content="4Dl6xsmHKZH7TgjbaF0N1Q7EpeUgaMdt-heG_zFpUZQ" />
-	<title>phr.ie - It works!</title>
-	<link rel="stylesheet" href="assets/css/foundation.min.css">
+---
+layout: default
+title:  "PHR.ie"
+---
 
-</head>
-<body>
-	<div class="row">
-		<div class="small-12 text-center">
-			<h1 style="margin-top:2em;">Welcome to Panacea Health Research Limited</h1>
-			<p>We're building our swish new website at the moment.</p>
-			<p>In the meantime please feel free to contact us on <a href="mailto:info@phr.ie"><strong>info@phr.ie</strong></a></p>
-		</div>
+<!--<div class="row">
+	<div class="small-12 text-center">
+		<h1 style="margin-top:2em;">Welcome to Panacea Health Research Limited</h1>
+		<p>We're building our swish new website at the moment.</p>
+		<p>In the meantime please feel free to contact us on <a href="mailto:info@phr.ie"><strong>info@phr.ie</strong></a></p>
 	</div>
-</body>
-</html>
+</div>-->
+
+<div class="row">
+	<div class="medium-8 columns">
+	    <div class="blog-post">
+	    	{% for post in site.posts %}
+	    		<h3>{{post.title}} <small>{{post.date}}</small></h3>
+	    		<img class="thumbnail" src="{{post.image | prepend: '/img/' | prepend: site.baseurl}}">
+	        	<p>{{post.excerpt}}</p>
+	        	<div class="callout">
+			        <ul class="menu simple">
+			          <li><a href="#">Author: {{post.author}}</a></li>
+			          <li><a href="#">Comments: X</a></li>
+			        </ul>
+			    </div>
+	    	{% endfor %}
+	      
+	        
+	      
+	    </div>
+	</div>
+</div>
