@@ -1,9 +1,13 @@
 <header class="site-header">
 
   
-
-<div class="top-bar">
+<div class="title-bar" data-responsive-toggle="example-menu" data-hide-for="medium">
+  <button class="menu-icon" type="button" data-toggle></button>
+  <div class="title-bar-title">Menu</div>
+</div>
+<div class="top-bar" id="example-menu">
   <div class="top-bar-left">
+
     <ul class="menu">
       <li class="menu-text">{{site.title}}</li>
     </ul>
@@ -19,9 +23,9 @@
   </div>
 </div>
 
-<div class="callout large primary">
+<div class="callout large primary big-image">
   <div class="row column text-center">
-    <h1><img src="{{"phr_logo.png" | prepend: "/img/" | prepend: site.baseurl}}" style="width:300px;"></h1>
+    <h1><img class="pad-2x bg-white" src="{{"phr_logo.png" | prepend: "/img/" | prepend: site.baseurl}}" style="width:300px;"></h1>
   </div>
 </div>
 </header>

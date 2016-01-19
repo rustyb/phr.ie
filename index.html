@@ -1,6 +1,6 @@
 ---
 layout: default
-title:  "PHR.ie"
+title:  "Home"
 ---
 
 <!--<div class="row">
@@ -12,18 +12,20 @@ title:  "PHR.ie"
 </div>-->
 
 <div class="row">
-	<div class="medium-8 columns">
+	<div class="small-12 medium-8 small-centered columns">
 	    <div class="blog-post">
 	    	{% for post in site.posts %}
-	    		<h3><a href="{{post.url |prepend: site.baseurl}}">{{post.title}} <small>{{post.date | date: "%b %-d, %Y"}}</small></a></h3>
-	    		<img class="thumbnail" src="{{post.image | prepend: '/img/' | prepend: site.baseurl}}">
+	    		<h3>
+		    		<a href="{{post.url |prepend: site.baseurl}}#title">
+		    			{{post.title}}<br>
+		    			<small>{{post.date | date: "%b %-d, %Y"}}</small>
+		    		</a>
+	    		</h3>
+	    		<a href="{{post.url |prepend: site.baseurl}}#title"><img class="thumbnail" src="{{post.image | prepend: '/img/' | prepend: site.baseurl}}"></a>
 	        	<p>{{post.excerpt}}</p>
-	        	<div class="callout">
-			        <ul class="menu simple">
-			          <li><a href="#">Author: {{post.author}}</a></li>
-			          <li><a href="#">Comments: X</a></li>
-			        </ul>
-			    </div>
+	        	<div class="text-center">
+	        		<a class="button large expanded radius hollow" href="{{post.url |prepend: site.baseurl}}">Keep Reading</a>
+	        	</div>
 	    	{% endfor %}
 	      
 	        
