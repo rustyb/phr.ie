@@ -6,10 +6,10 @@
   <div class="title-bar-title">Menu</div>
 </div>
 <div class="top-bar" id="example-menu">
+<div class="row columns">
   <div class="top-bar-left">
-
     <ul class="menu">
-      <li class="menu-text">{{site.title}}</li>
+      <li class="menu-text logo"><a href="{{site.baseurl | append: '/'}}"><img class="logo" src="{{'/assets/img/logo.png' | prepend: site.baseurl}}" title="{{site.title}}"/></a></li>
     </ul>
   </div>
   <div class="top-bar-right">
@@ -19,8 +19,10 @@
         <li><a class="page-link" href="{{ my_page.url | prepend: site.baseurl }}">{{ my_page.title }}</a></li>
         {% endif %}
       {% endfor %}
+      <li><a class="page-link" href="mailto:{{ site.email }}">Contact</a></li>
     </ul>
   </div>
+</div>
 </div>
 
 <div class="callout large primary big-image">
