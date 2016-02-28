@@ -73,8 +73,11 @@
     transition: background-size 18s .7s ease-out;*/
 }
 
+.big-image-small {padding: 1% 0 !important;}
+
 @media screen and (max-width: 640px) {
 	.big-image {padding: 5% 0 10% !important;}
+    .big-image-small {padding: 1% 0 10% !important;}
 }
 
 .pad-2x {
@@ -145,4 +148,14 @@
 	    color: #fff;
 	    text-transform: uppercase;
 	}
+}
+
+.global-header {
+    background-color: white;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.18);
+    
+    -webkit-transition: padding 0.5s ease;
+    transition: padding 0.5s ease;
+    z-index: 5;
 }
