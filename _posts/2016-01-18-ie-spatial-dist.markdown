@@ -4,7 +4,12 @@ title:  "Ireland’s Older Demographic Spatial Distribution"
 date:   2016-01-18 21:19:18 +0100
 categories: demographics
 image: "blog.png"
+tags: 
+    - demographics 
+    - map 
+    - golden age
 ---
+
 Demographic models that have been extrapolated to predict Ireland’s future population indicate that while the proportionate number of older people within the population is set to rise, the State will in fact experience a ‘**demographic golden age**’ due to the large number of younger people in the population. 
 
 Ireland hit a record number of births in 2010, which stood at 76,762, (CSO, 2012, p.11). Ireland has the highest proportion of young people at 21.3% in the EU, and the lowest proportion of old people which stood at 11.7% of the population (Ageing Well Network, 2012, p.13). is demographic pattern will serve to provide Ireland with a modicum of breathing room in terms of addressing the challenges posed by providing for a greatly expanded older population in terms of healthcare, social insurance, mobility and other life affirming services. 

@@ -1,0 +1,19 @@
+---
+layout: page
+title: Blog
+---
+
+<div class="medium-9 columns">
+{% for post in site.posts %}
+<article>
+	<h2 class="entry-title"><a href="{{post.url |prepend: site.baseurl}}#title">{{ post.title }}</a></h2>
+	<div class="post-date" datetime="{{post.date}}">{{post.date | date: "%b %-d, %Y"}}</div>
+	<div class="post-author"><a href="#">by {{post.author}}</a></div>
+	<div class="post-categories">{{post.categories}}</div>
+	<p>
+		{{post.excerpt}} 
+		<a href="{{post.url |prepend: site.baseurl}}#title">Continue Reading</a>
+	</p>
+</article>
+{% endfor %}
+</div>

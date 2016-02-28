@@ -66,9 +66,11 @@
     padding: 15% 0 !important;
     position: relative;
     background: url(/assets/img/bench.jpg) center right/100% auto no-repeat;
-    webkit-transition: background-size 18s .7s ease-out;
+    -webkit-transition: padding 0.25s ease;
+    transition: padding 0.25s ease;
+    /*webkit-transition: background-size 18s .7s ease-out;
     -moz-transition: background-size 18s .7s ease-out;
-    transition: background-size 18s .7s ease-out;
+    transition: background-size 18s .7s ease-out;*/
 }
 
 @media screen and (max-width: 640px) {
@@ -99,9 +101,48 @@
 	}
 }
 
+.entry-title {
+   & > a:after  {
+        border-top: none;
+    }
+    & a {
+        color:black;
+        font-weight: 900;
+        line-height: 2.8rem;
+    }
+}
+
 .logo {
 	height: 38px;
 }
 .menu-text.logo {
 	padding: 0.7rem 1rem;
+}
+
+.nav-global-secondary {
+    width: auto;
+    float: right;
+}
+
+.nav-global-secondary li a {
+	color: black;
+    display: block;
+    margin: 0;
+    padding: 1.7rem 24px !important;
+    -webkit-transition: padding 0.25s ease;
+    transition: padding 0.25s ease;
+    font-weight: 900;
+}
+
+.nav-global-secondary ul li > a.state-active {
+	background-color: #D22027;
+    color: white;
+}
+
+.tags {
+	li:first-child {
+		background-color: #D22027;
+	    color: #fff;
+	    text-transform: uppercase;
+	}
 }
