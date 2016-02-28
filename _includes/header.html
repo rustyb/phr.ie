@@ -27,9 +27,17 @@
 </div>
 </div>
 
-<div class="callout large primary big-image {%unless page.masthead-class %}big-image-small{% endunless %}">
+<div class="callout large primary big-image {%unless page.masthead-class %}big-image-small{% endunless %}" style="background-color: #000;
+    opacity: 0.8;">
   <div class="row column text-center">
-    <h1><img class="pad-2x bg-white" src="{{"phr_logo.png" | prepend: "/img/" | prepend: site.baseurl}}" style="width:300px;"></h1>
+    <h1 {%unless page.homepage == "home"%} class="page-title" {%endunless%}>
+    {% if page.homepage == "home" %}
+      <img class="pad-2x bg-white" src="{{"phr_logo.png" | prepend: "/img/" | prepend: site.baseurl}}" style="width:300px;">
+    {% else %}
+      {{page.title}}
+    {% endif %}
+
+    </h1>
   </div>
 </div>
 </header>

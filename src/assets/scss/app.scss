@@ -159,3 +159,49 @@
     transition: padding 0.5s ease;
     z-index: 5;
 }
+
+.post-meta {text-transform: uppercase;}
+
+.post-date,.post-author {
+    display: inline-block;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.post-date, .post-author {
+    color: #999595;
+}
+.post-author {padding-left: 10px;}
+
+.post-meta {
+   & a:after  {
+        border-top: none;
+    }
+}
+.post-categories {
+    color: #999595;
+    font-size: 14px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.page-title {
+    padding: 20px 0;
+    width: auto;
+    text-shadow: 0px 0px 3px rgba(0,0,0,0.6);
+    float: none;
+    min-width: 5em;
+    text-align: center;
+    display: inline-block;
+    font-size: 57px;
+    line-height: 65px;
+    line-height: 4.0625rem;
+    margin-top: 1.5625rem;
+    margin-top: 25px;
+    color: #FFF;
+    text-transform: uppercase;
+}
