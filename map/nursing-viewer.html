@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Nursing Home Explorer</title>
+
+    <link href='https://www.mapbox.com/base/latest/base.css' rel='stylesheet' />
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.14.3/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.14.3/mapbox-gl.css' rel='stylesheet' />
+
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+        /* mapboxgl overrides */
+        .mapboxgl-popup { margin-top:-30px; }
+        .mapboxgl-popup-content { min-width:180px; padding:0; max-width: 220px;}
+        .mapboxgl-ctrl-bottom-right a { color:#fff; }
+        .mapboxgl-ctrl-bottom-right a:hover { text-decoration:underline; }
+        .sidebar-container { width:300px; }
+        .sidebar-container .keyline-top { border-color:rgba(0,0,0,0.4); }
+        /* Style classes */
+        .fill-darkgrey { background-color:#505050; }
+        .lifted { box-shadow:0 1px 2px rgba(0,0,0,0.20); }
+
+
+    </style>
+</head>
+<body>
+
+<div id='map'></div>
+<div class='pin-topleft pin-bottomleft pad1 z10 sidebar-container'>
+  <div id='sidebar' class='fill-darkgrey round lifted full-height-container contain'>
+
+    <div class='pad2 contain dark'>
+      <h3 class='block space-bottom1'>Nursing Homes - Ireland</h3>
+      <div class='prose quiet'>
+        <p>Click on a marker to learn more about a Nursing Home</p>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoicnVzdHkiLCJhIjoib0FjUkJybyJ9.V9QoXck_1Z18MhpwyIE2Og';
+if (!mapboxgl.supported()) {
+    alert('Your browser does not support Mapbox GL');
+} else {
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: './nursing-homes.json',
+        center: [-7.709,53.434],
+        zoom: 6.0,
+        hash: true
+    });
+    map.addControl(new mapboxgl.Navigation({position: 'top-right'}));
+
+    // Prepend data attribution
+  var credit = document.createElement('a');
+  credit.href = 'http://www.hse.ie';
+  credit.className = 'fill-darken2 pad0x inline fr color-white';
+  credit.target = '_target';
+  credit.textContent = 'Data sourced from HSE';
+  map.getContainer().querySelector('.mapboxgl-ctrl-bottom-right').appendChild(credit);
+
+
+    var popup = new mapboxgl.Popup();
+
+    // When a click event occurs near a marker icon, open a popup at the location of
+    // the feature, with description HTML from its properties.
+    map.on('click', function (e) {
+        map.featuresAt(e.point, {
+            radius: 7.5, // Half the marker size (15px).
+            includeGeometry: true,
+            layer: 'nursing-homes'
+        }, function (err, features) {
+
+            if (err || !features.length) {
+                popup.remove();
+                return;
+            }
+
+            var feature = features[0];
+
+            console.log(feature);
+
+            var topColor = feature.properties.public_private == "Public" ? '#27b691' : '#ED5299';
+            var popUpHTML = '<div class="pad1 round-top dark" style="background-color:'+topColor+'">' +
+                                '<h3>' + feature.properties.name + '</h3></div>' +
+                                '<div class="pad1 fill-white round-bottom">' + 
+                                    '<h4 class="capitalize">'+ feature.properties.beds + ' beds</h4>' +
+                                    '<span class="quiet">' + feature.properties.county + '</span>' +
+                                '</div>';
+            // Populate the popup and set its coordinates
+            // based on the feature found.
+            popup.setLngLat(feature.geometry.coordinates)
+                .setHTML(popUpHTML)
+                .addTo(map);
+        });
+    });
+
+    // Use the same approach as above to indicate that the symbols are clickable
+    // by changing the cursor style to 'pointer'.
+    map.on('mousemove', function (e) {
+        map.featuresAt(e.point, {
+            radius: 7.5, // Half the marker size (15px).
+            layer: 'nursing-homes'
+        }, function (err, features) {
+            map.getCanvas().style.cursor = (!err && features.length) ? 'pointer' : '';
+        });
+    });
+}
+</script>
+
+<div class="pad1 round-top dark" style="background-color:#27b691">
+  <h3>$180,000</h3>
+</div>
+
+<div class="pad1 fill-white round-bottom">
+  
+  
+  
+  
+</div>
+</body>
+</html>
