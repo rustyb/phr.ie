@@ -81,8 +81,6 @@ if (!mapboxgl.supported()) {
 
             var feature = features[0];
 
-            console.log(feature);
-
             var topColor = feature.properties.public_private == "Public" ? '#27b691' : '#ED5299';
             var popUpHTML = '<div class="pad1 round-top dark" style="background-color:'+topColor+'">' +
                                 '<h3>' + feature.properties.name + '</h3></div>' +
