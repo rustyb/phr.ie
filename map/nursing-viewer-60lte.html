@@ -33,7 +33,7 @@
   <div id='sidebar' class='fill-darkgrey round lifted full-height-container contain'>
 
     <div class='pad2 contain dark'>
-      <h3 class='block space-bottom1'>Nursing Homes - Ireland</h3>
+      <h3 class='block space-bottom1'>Nursing Homes with 60 Beds or less</h3>
       <div class='prose quiet'>
         <p>Click on a marker to learn more about a Nursing Home</p>
       </div>
@@ -112,7 +112,14 @@ if (!mapboxgl.supported()) {
             map.getCanvas().style.cursor = (!err && features.length) ? 'pointer' : '';
         });
     });
+
+    map.on('load', function() {
+        map.setFilter('nursing-homes-pp', ["all",["<", "beds", 60],["!=", "public_private", "Private"]]);
+        map.setFilter('nursing-homes-pr', ["<", "beds", 60],["==", "public_private", "Private"]);
+    })
 }
+
+
 </script>
 
 </body>
