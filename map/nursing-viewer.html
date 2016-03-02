@@ -77,7 +77,7 @@ if (!mapboxgl.supported()) {
         map.featuresAt(e.point, {
             radius: 7.5, // Half the marker size (15px).
             includeGeometry: true,
-            layer: 'nursing-homes'
+            layer: ['nursing-homes-pr', 'nursing-homes-pp']
         }, function (err, features) {
 
             if (err || !features.length) {
