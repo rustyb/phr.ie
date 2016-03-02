@@ -40,6 +40,12 @@
     </div>
   </div>
 </div>
+<div class='pin-topright pad1 z10 filter-container'>
+  <nav id='filter-group' class='checkbox-pill pill lifted fill-darkgrey round'>
+      <label class="button col12" style="background-color:#27b691;min-width: 150px;" for="poi-1">Private Home</label>
+      <label class="button col12" style="background-color:#ED5299;min-width: 150px;" for="poi-2">Public Home</label>
+  </nav>
+</div>
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoicnVzdHkiLCJhIjoib0FjUkJybyJ9.V9QoXck_1Z18MhpwyIE2Og';
 if (!mapboxgl.supported()) {
@@ -52,7 +58,7 @@ if (!mapboxgl.supported()) {
         zoom: 6.0,
         hash: true
     });
-    map.addControl(new mapboxgl.Navigation({position: 'top-right'}));
+    map.addControl(new mapboxgl.Navigation({position: 'bottom-right'}));
 
     // Prepend data attribution
   var credit = document.createElement('a');
@@ -109,15 +115,5 @@ if (!mapboxgl.supported()) {
 }
 </script>
 
-<div class="pad1 round-top dark" style="background-color:#27b691">
-  <h3>$180,000</h3>
-</div>
-
-<div class="pad1 fill-white round-bottom">
-  
-  
-  
-  
-</div>
 </body>
 </html>
