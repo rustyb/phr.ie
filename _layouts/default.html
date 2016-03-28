@@ -7,19 +7,21 @@
 
     {% include header.html %}
     
-    {% unless page.title == "Blog" %}
-    <div class="column row">
-      <div class="small-12 medium-10 small-centered columns">
-        {{ content }}
-      </div>
-    </div>
-    {% else %}
+    {% if page.title == "Blog" %}
     <div class="column row">
       <div class="small-12 small-centered columns">
         {{ content }}
       </div>
     </div>
-    {% endunless %}
+    {% elsif page.layout == "report" %}
+      {{ content }}
+    {% else %}
+    <div class="column row">
+      <div class="small-12 medium-10 small-centered columns">
+        {{ content }}
+      </div>
+    </div>
+    {% endif %}
 
     {% include footer.html %}
   <script type="text/javascript" src="{{ "/assets/js/app.js" | prepend: site.baseurl }}"></script>

@@ -4,18 +4,16 @@ masthead-class: "home"
 homepage: "home"
 ---
 
-<!--<div class="row">
-	<div class="small-12 text-center">
-		<h1 style="margin-top:2em;">Welcome to Panacea Health Research Limited</h1>
-		<p>We're building our swish new website at the moment.</p>
-		<p>In the meantime please feel free to contact us on <a href="mailto:info@phr.ie"><strong>info@phr.ie</strong></a></p>
-	</div>
-</div>-->
+<style type="text/css">
+	article {padding-bottom: 5em;}
+</style>
 
 <div class="row">
 	<div class="small-12 medium-10 small-centered columns">
 	    <div class="blog-post">
 	    	{% for post in site.posts %}
+	    		{%if post.homepage != false %}
+	    		<article>
 	    		<h3>
 		    		<a href="{{post.url |prepend: site.baseurl}}#title">
 		    			{{post.title}}<br>
@@ -27,6 +25,8 @@ homepage: "home"
 	        	<div class="text-center">
 	        		<a class="button large expanded radius hollow" href="{{post.url |prepend: site.baseurl}}">Keep Reading</a>
 	        	</div>
+	        	</article>
+	        	{% endif %}
 	    	{% endfor %}
 	      
 	        
