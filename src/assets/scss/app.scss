@@ -63,7 +63,7 @@
 
 .big-image {
     background-size: 100% auto,100% auto,100% auto;
-    padding: 15% 0 !important;
+    padding: 13% 0 !important;
     position: relative;
     background: url(/assets/img/bench.jpg) center right/100% auto no-repeat;
     -webkit-transition: padding 0.25s ease;
@@ -76,8 +76,12 @@
 .big-image-small {padding: 1% 0 !important;}
 
 @media screen and (max-width: 640px) {
-	.big-image {padding: 5% 0 10% !important;}
-    .big-image-small {padding: 1% 0 10% !important;}
+	.big-image {padding: 5% 0 5% !important;}
+    .big-image-small {padding: 1% 0 5% !important;}
+}
+
+@media screen and (min-width: 40em) and (max-width: 63.9375em) {
+    .big-image {padding: 8% 0 !important;}
 }
 
 .pad-2x {
@@ -205,3 +209,4 @@
     color: #FFF;
     text-transform: uppercase;
 }
+
