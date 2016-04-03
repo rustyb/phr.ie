@@ -13,11 +13,12 @@
         {{ content }}
       </div>
     </div>
-    {% elsif page.layout == "report" %}
+    {% elsif page.layout == "report" or page.no_row == "yes" %}
       {{ content }}
     {% else %}
-    <div class="column row">
-      <div class="small-12 medium-10 small-centered columns">
+    <div>
+      <!--small-12 medium-10 small-centered columns-->
+      <div class="column row medium-8">
         {{ content }}
       </div>
     </div>
