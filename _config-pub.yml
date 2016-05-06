@@ -11,8 +11,8 @@ email: info@phr.ie
 description: > # this means to ignore newlines until "baseurl:"
   Panacea Health Research LTD. is an Irish startup specialising in spatial
   health research for the elderly care sector.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://dev.phr.ie/phr.ie/" # the base hostname & protocol for your site
+baseurl: "/phr.ie" # the subpath of your site, e.g. /blog
+url: "http://dev.phr.ie/phr.ie" # the base hostname & protocol for your site
 twitter_username: rusty1052
 github_username:  rustyb
 
