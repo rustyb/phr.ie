@@ -29,4 +29,4 @@ defaults:
       path: "" # an empty string here means all files in the project
       tyoe: "posts"
     values:
-      author: "PHR Team"
+      author: "PHRs Team"
