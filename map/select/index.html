@@ -83,6 +83,8 @@ map.on('load', function() {
 
     // Variable for the draw box element.
     var box;
+    
+    map.addControl(new mapboxgl.Navigation({position: 'top-right'}));
 
     // Add the source to query. In this example we're using
     // county polygons uploaded as vector tiles
