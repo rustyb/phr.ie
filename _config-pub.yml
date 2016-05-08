@@ -21,7 +21,7 @@ markdown: kramdown
 
 permalink: pretty
 
-exclude: [node_modules, jekyll, etc, bower_components, src, gulpfile.js, bower.json, package.json]
+exclude: [node_modules, jekyll, etc, bower_components, src, gulpfile.js, bower.json, package.json, 'data/census', maps]
 
 defaults:
   -
