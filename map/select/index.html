@@ -10,6 +10,7 @@
     <style>
         body { margin:0; padding:0; }
         #map { position:absolute; top:0; bottom:0; width:100%; }
+        .mapboxgl-popup-content { min-width:180px; padding:0; max-width: 220px;}
     </style>
 </head>
 <body>
@@ -116,6 +117,47 @@ map.on('load', function() {
         },
         "filter": ["in", "SMALL_AREA", ""]
     }, 'place-city-sm'); // Place polygon under these labels.
+
+    // Add layers for showing the nursing homes
+    map.addSource('nursingHomes', {
+        "type": "vector",
+        "url": "mapbox://rusty.23z2k80t"
+    });
+
+    map.addLayer({
+        "layout": {
+            "visibility": "visible"
+        },
+        "type": "circle",
+        "source": "nursingHomes",
+        "id": "nursing-homes-style",
+        "paint": {
+            "circle-color": {
+                property: "public_private",
+                stops:[
+                    ["Private", "#27b691"],
+                    ["","#ED5299"]
+                ]
+            },
+            "circle-opacity": 0.8,
+            "circle-radius": {
+                property: 'beds',
+                stops: [
+                    [{zoom: 8,  value: 10}, 2],
+                    [{zoom: 8,  value: 50}, 3],
+                    [{zoom: 8,  value: 100}, 6],
+                    [{zoom: 8,  value: 150}, 8],
+
+                    [{zoom: 10,  value: 10}, 3],
+                    [{zoom: 10,  value: 50}, 5],
+                    [{zoom: 10,  value: 100}, 10],
+                    [{zoom: 10,  value: 150}, 15]
+                    ]
+                }
+            },
+        "source-layer": "nursing_home_capacity_",
+        "interactive": true
+        })
 
     // Set `true` to dispatch the event before other functions
     // call it. This is necessary for disabling the default map
@@ -279,6 +321,33 @@ map.on('load', function() {
 
         popup.setLngLat(e.lngLat)
             .setText(feature.properties.EDNAME)
+            .addTo(map);
+    });
+
+    // When a click event occurs near a marker icon, open a popup at the location of
+    // the feature, with description HTML from its properties.
+    map.on('click', function (e) {
+        var popup = new mapboxgl.Popup();
+        var features = map.queryRenderedFeatures(e.point, { layers: ["nursing-homes-style"] })
+
+        if (!features.length) {
+
+            return;
+        }
+
+        var feature = features[0];
+
+        var topColor = feature.properties.public_private == "Private" ? '#27b691' : '#ED5299';
+        var popUpHTML = '<div class="pad1 round-top dark" style="background-color:'+topColor+'">' +
+                            '<h3>' + feature.properties.name + '</h3></div>' +
+                            '<div class="pad1 fill-white round-bottom">' + 
+                                '<h4 class="capitalize">'+ feature.properties.beds + ' beds</h4>' +
+                                '<span class="quiet">' + feature.properties.county + '</span>' +
+                            '</div>';
+        // Populate the popup and set its coordinates
+        // based on the feature found.
+        popup.setLngLat(map.unproject(e.point))
+            .setHTML(popUpHTML)
             .addTo(map);
     });
 });

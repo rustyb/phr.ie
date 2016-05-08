@@ -31,3 +31,40 @@
       "fill-opacity": 0.45
     }
   }
+
+// old dual layer for points
+, {
+        "layout": {
+            "visibility": "visible"
+        },
+        "type": "circle",
+        "source": "mapbox://rusty.23z2k80t",
+        "id": "nursing-homes-pr",
+        "paint": {
+            "circle-color": "#27b691",
+            "circle-radius": {
+                "base": 2,
+                "stops": [[13, 3], [15, 5], [17, 8]]
+                }
+            },
+        "filter": ["==", "public_private", "Private"],
+        "source-layer": "nursing_home_capacity_",
+        "interactive": true
+    }, {
+        "layout": {
+            "visibility": "visible"
+        },
+        "type": "circle",
+        "source": "mapbox://rusty.23z2k80t",
+        "id": "nursing-homes-pp",
+        "paint": {
+            "circle-color": "#ED5299",
+            "circle-radius": {
+                "base": 2,
+                "stops": [[13, 3], [15, 5], [17, 8]]
+                }
+            },
+        "filter": ["!=", "public_private", "Private"],
+        "source-layer": "nursing_home_capacity_",
+        "interactive": true
+    }
