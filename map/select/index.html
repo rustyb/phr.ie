@@ -45,6 +45,7 @@
         <p>Hold <strong><kbd>Shift</kbd>  & drag your mouse</strong> accross the map to query the population of the Small Areas.</p>
       </div>
     </div>
+    <div id="legend" class='small dark'></div>
     <div id='aggregates' class='fill-navy-dark round-bottom pad2 small dark'></div>
   </div>
 </div>
@@ -58,6 +59,28 @@ var defaultText = document.createElement('strong');
 
 aggregateContainer.appendChild(defaultText);
 
+var legendContainer = document.getElementById('legend');
+
+var legend_items = [
+    {
+        label: "Private Home",
+        colour: "#ED5299",
+        count: 425
+    }, {
+        label: "Public Home",
+        colour: "#27b691",
+        count: 139
+    }
+]
+
+legend_items.forEach(function(d) {
+    leg = document.createElement('label');
+    leg.className = 'pad2 strong col12'
+    leg.style = 'background-color:'+d.colour+';min-width: 150px;'
+    leg.textContent = d.label + ' (' + d.count+ ')'
+
+    legendContainer.appendChild(leg);
+})
 
 mapboxgl.accessToken = 'pk.eyJ1IjoicnVzdHkiLCJhIjoib0FjUkJybyJ9.V9QoXck_1Z18MhpwyIE2Og';
 var map = new mapboxgl.Map({
@@ -243,7 +266,7 @@ map.on('load', function() {
         // If bbox exists. use this value as the argument for `queryRenderedFeatures`
         if (bbox) {
             var features = map.queryRenderedFeatures(bbox, { layers: ['counties'] });
-            
+
             if (features.length >= 1000) {
                 return window.alert('Select a smaller number of features');
             }
