@@ -52,6 +52,12 @@
 <script>
 
 var aggregateContainer = document.getElementById('aggregates');
+var defaultText = document.createElement('strong');
+  defaultText.textContent = 564 + ' nursing homes';
+
+
+aggregateContainer.appendChild(defaultText);
+
 
 mapboxgl.accessToken = 'pk.eyJ1IjoicnVzdHkiLCJhIjoib0FjUkJybyJ9.V9QoXck_1Z18MhpwyIE2Og';
 var map = new mapboxgl.Map({
@@ -237,7 +243,7 @@ map.on('load', function() {
         // If bbox exists. use this value as the argument for `queryRenderedFeatures`
         if (bbox) {
             var features = map.queryRenderedFeatures(bbox, { layers: ['counties'] });
-
+            
             if (features.length >= 1000) {
                 return window.alert('Select a smaller number of features');
             }
