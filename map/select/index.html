@@ -7,6 +7,9 @@
     <link href='https://www.mapbox.com/base/latest/base.css' rel='stylesheet' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.18.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.18.0/mapbox-gl.css' rel='stylesheet' />
+    <script type="text/javascript" src="./mapbox-gl-draw.js"></script>
+    <link rel="stylesheet" type="text/css" href="./mapbox-gl-draw.css">
+    <script type="text/javascript" src="//api.tiles.mapbox.com/mapbox.js/plugins/turf/v2.0.0/turf.min.js"></script>
     <style>
         body { margin:0; padding:0; }
         #map { position:absolute; top:0; bottom:0; width:100%; }
@@ -37,7 +40,7 @@
 
 <div id='map'></div>
 
-<div class='pin-topleft pad1 sidebar-panel z10 sidebar-container'>
+<div class='pin-bottomright pad1 sidebar-panel z10 sidebar-container'>
   <div class='fill-white round lifted'>
     <div class='pad2'>
       <h3 class='block space-bottom1'>The ageing population of Ireland</h3>
@@ -100,7 +103,12 @@ var popup = new mapboxgl.Popup({
     closeButton: false
 });
 
+var Draw = mapboxgl.Draw({controls: {polygon: true, trash: true},displayControlsDefault: false});
+
+
 map.on('load', function() {
+
+    map.addControl(Draw);
     var canvas = map.getCanvasContainer();
 
     // Variable to hold the starting xy coordinates
@@ -164,8 +172,8 @@ map.on('load', function() {
             "circle-color": {
                 property: "public_private",
                 stops:[
-                    ["Private", "#27b691"],
-                    ["","#ED5299"]
+                    ["Private", "#ED5299"],
+                    ["","#27b691"]
                 ]
             },
             "circle-opacity": 0.8,
@@ -188,6 +196,7 @@ map.on('load', function() {
         "interactive": true
         })
 
+    
     // Set `true` to dispatch the event before other functions
     // call it. This is necessary for disabling the default map
     // dragging behaviour.
@@ -336,22 +345,95 @@ map.on('load', function() {
         map.dragPan.enable();
     }
 
-    map.on('mousemove', function(e) {
-        var features = map.queryRenderedFeatures(e.point, { layers: ['counties-highlighted'] });
-        // Change the cursor style as a UI indicator.
-        map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
+    function updateFiltered() {
+        var bbox1 = turf.extent(Draw.getAll())
+        var bbox = [[bbox1[0], bbox1[1]], [bbox1[2], bbox1[3]]].map(map.project.bind(map))
+        var features = map.queryRenderedFeatures(bbox, { layers: ['counties'] });
 
-        if (!features.length) {
-            popup.remove();
-            return;
+            if (features.length >= 1000) {
+                return window.alert('Select a smaller number of features');
+            }
+
+            // Run through the selected features and set a filter
+            // to match features with unique FIPS codes to activate
+            // the `counties-highlighted` layer.
+            // get the sum of population
+            var totalPop = 0;
+            var total65 = 0;
+            var total85 = 0;
+            
+            var filter = features.reduce(function(memo, feature) {
+                memo.push(feature.properties['SMALL_AREA']);
+                totalPop += feature.properties['TOTAL2011'];
+                total65 += feature.properties['AGE65_69T'] + feature.properties['AGE70_74T'] + feature.properties['AGE75_79T'] + feature.properties['AGE80_84T'] 
+                total85 += feature.properties['T1_1AGEGE_85T'];
+                return memo;
+            }, ['in', 'SMALL_AREA']);
+            console.log(filter);
+            console.log(totalPop, 'is the total population');
+            console.log(total65, '65 - 84 AGE is the total population');
+            console.log(total85, '85+ is the total population');
+
+            aggregateContainer.innerHTML = '';
+            var count = document.createElement('strong');
+            count.className = 'block space-bottom1';
+            count.textContent = features.length.toLocaleString() + ' small areas selected';
+            aggregateContainer.appendChild(count);
+
+            
+            var aggregates = [{
+                label: 'total population',
+                number: totalPop
+            }, {
+                label: 'aged 65-84',
+                number: total65,
+                pc: Math.round((total65 / totalPop) * 100).toFixed(2)
+            }, {
+                label: 'aged 85+',
+                number: total85,
+                pc: Math.round((total85 / totalPop) * 100).toFixed(2)
+            }]
+
+            aggregates.forEach(function(d) {
+                var numBig = document.createElement('div');
+                numBig.className = 'clearfix col12 space-bottom1 dark contain big-num';
+                if (d.pc) {
+                    numBig.textContent = d.number.toLocaleString() + ' / ' + d.pc.toLocaleString() + '%' ;
+                } else {
+                    numBig.textContent = d.number.toLocaleString()
+                }
+
+                aggregateContainer.appendChild(numBig);
+
+                var label = document.createElement('strong');
+                label.className = 'block space-bottom0 quiet small strong';
+                label.textContent = d.label
+                
+                aggregateContainer.appendChild(label);
+            });
+            
+
+            map.setFilter("counties-highlighted", filter);
         }
+    
+    map.on('draw.changed', function (e) { updateFiltered() })
 
-        var feature = features[0];
+    // map.on('mousemove', function(e) {
+    //     var features = map.queryRenderedFeatures(e.point, { layers: ['counties-highlighted'] });
+    //     // Change the cursor style as a UI indicator.
+    //     map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
 
-        popup.setLngLat(e.lngLat)
-            .setText(feature.properties.EDNAME)
-            .addTo(map);
-    });
+    //     if (!features.length) {
+    //         popup.remove();
+    //         return;
+    //     }
+
+    //     var feature = features[0];
+
+    //     popup.setLngLat(e.lngLat)
+    //         .setText(feature.properties.EDNAME)
+    //         .addTo(map);
+    // });
 
     // When a click event occurs near a marker icon, open a popup at the location of
     // the feature, with description HTML from its properties.
@@ -366,7 +448,7 @@ map.on('load', function() {
 
         var feature = features[0];
 
-        var topColor = feature.properties.public_private == "Private" ? '#27b691' : '#ED5299';
+        var topColor = feature.properties.public_private == "Private" ? '#ED5299' : '#27b691';
         var popUpHTML = '<div class="pad1 round-top dark" style="background-color:'+topColor+'">' +
                             '<h3>' + feature.properties.name + '</h3></div>' +
                             '<div class="pad1 fill-white round-bottom">' + 
