@@ -166,7 +166,7 @@
 
 .post-meta {text-transform: uppercase;}
 
-.post-date,.post-author {
+.post-date,.post-author,.post-categories {
     display: inline-block;
     margin-top: 0;
     margin-bottom: 0;
@@ -186,6 +186,7 @@
     }
 }
 .post-categories {
+    padding-left: 20px;
     color: #999595;
     font-size: 14px;
     font-size: 0.9rem;
@@ -210,3 +211,38 @@
     text-transform: uppercase;
 }
 
+/* Padding
+------------------------------------------------------- */
+.pad0  { padding:5px; }
+.pad0y { padding-top:5px; padding-bottom:5px; }
+.pad0x { padding-right:5px; padding-left:5px; }
+
+.pad1    { padding:10px; }
+.pad2    { padding:20px; }
+.pad4    { padding:40px; }
+
+.pad1x { padding-left: 10px; padding-right: 10px;}
+.pad2x { padding-left: 20px; padding-right: 20px;}
+.pad4x { padding-left: 40px; padding-right: 40px;}
+
+.pad1y { padding-top: 10px; padding-bottom: 10px;}
+.pad2y { padding-top: 20px; padding-bottom: 20px;}
+.pad4y { padding-top: 40px; padding-bottom: 40px;}
+
+.pad8 {  padding: 80px; }
+.pad8y { padding-top: 80px; padding-bottom: 80px;}
+.pad8x { padding-left: 80px; padding-right: 80px;}
+
+/* Keylines
+------------------------------------------------------- */
+.keyline-all    { border:1px solid rgba(0,0,0,0.10); }
+.keyline-top    { border-top:1px solid rgba(0,0,0,0.10); }
+.keyline-right  { border-right:1px solid rgba(0,0,0,0.10); }
+.keyline-bottom { border-bottom:1px solid rgba(0,0,0,0.10); }
+.keyline-left   { border-left:1px solid rgba(0,0,0,0.10); }
+
+.dark .keyline-all    { border:1px solid rgba(255,255,255,0.25); }
+.dark .keyline-top    { border-top:1px solid rgba(255,255,255,0.25); }
+.dark .keyline-right  { border-right:1px solid rgba(255,255,255,0.25); }
+.dark .keyline-bottom { border-bottom:1px solid rgba(255,255,255,0.25); }
+.dark .keyline-left   { border-left:1px solid rgba(255,255,255,0.25); }
