@@ -138,7 +138,7 @@ no_row: "yes"
 <div class="medium-6 columns text-left">
 <h3 style="line-height: 1;">Investing in the future of Ireland's nursing homes</h3>
 <p>This briefing note will provide an introduction to the location of nursing homes of under 60 beds in the Republic of Ireland. It will also estimate the level of investment required in order bring existing facilities up to the 60 bed level. The rationale for this examination arises from a report commissioned by the Department of Health in 2015.</p>
-<a href="{{'/investing-in-the-future/' | prepend:site.baseurl '}}" class="button large">Read More &rarr;</a>
+<a href="{{'/investing-in-the-future/' | prepend:site.baseurl }}" class="button large">Read More &rarr;</a>
 </div>
 
 
@@ -160,11 +160,15 @@ no_row: "yes"
 		    			
 		    		</a>
 	    		</h3>
-	    		<a href="{{post.url |prepend: site.baseurl}}#title"><img class="thumbnail" src="{{post.image | prepend: '/img/' | prepend: site.baseurl}}"></a>
+	    		<a href="{{post.url | prepend: site.baseurl}}#title"><img class="thumbnail" src="{{post.image | prepend: '/img/' | prepend: site.baseurl}}"></a>
 
 	        	<div>
+	        		{% if post.teaser %}
+		        		{{post.teaser}}
+	        		{% else %}
+		        		{{post.excerpt}}
+	        		{% endif %}
 	        		
-	        		{{post.excerpt}}
 	        	</div>
 	        	<div class="text-center">
 	        		<a class="button large expanded radius hollow" href="{{post.url |prepend: site.baseurl}}">Keep Reading</a>
