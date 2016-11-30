@@ -1,183 +1,310 @@
-var $        = require('gulp-load-plugins')();
-var argv     = require('yargs').argv;
-var browser  = require('browser-sync');
-var gulp     = require('gulp');
-var panini   = require('panini');
-var rimraf   = require('rimraf');
-var sequence = require('run-sequence');
-var sherpa   = require('style-sherpa');
+'use strict';
+var fs = require('fs');
+var gulp = require('gulp');
+var $ = require('gulp-load-plugins')();
+var del = require('del');
+var browserSync = require('browser-sync');
+var reload = browserSync.reload;
+var watchify = require('watchify');
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+var sourcemaps = require('gulp-sourcemaps');
+var gutil = require('gulp-util');
+var exit = require('gulp-exit');
+var rev = require('gulp-rev');
+var revReplace = require('gulp-rev-replace');
+var notifier = require('node-notifier');
+var cp = require('child_process');
+var YAML = require('yamljs');
+var SassString = require('node-sass').types.String;
+var PHR_ADDONS = require('phr-design-system/gulp-addons');
 
-// Check for --production flag
-var isProduction = !!(argv.production);
+// /////////////////////////////////////////////////////////////////////////////
+// --------------------------- Variables -------------------------------------//
+// ---------------------------------------------------------------------------//
 
-// Port to use for the development server.
-var PORT = 8000;
+// The package.json
+var pkg;
 
-// Browsers to target when prefixing CSS.
-var COMPATIBILITY = ['last 2 versions', 'ie >= 9'];
+// Environment
+// Set the correct environment, which controls what happens in config.js
+if (!process.env.DS_ENV) {
+  if (process.env.TRAVIS_BRANCH && process.env.TRAVIS_BRANCH !== process.env.DEPLOY_BRANCH) {
+    process.env.DS_ENV = 'staging';
+  } else if (process.env.TRAVIS_BRANCH && process.env.TRAVIS_BRANCH === process.env.DEPLOY_BRANCH) {
+    process.env.DS_ENV = 'production';
+  } else {
+    process.env.DS_ENV = 'development';
+  }
+}
 
-// File paths to various assets are defined here.
-var PATHS = {
-  assets: [
-    'src/assets/**/*',
-    '!src/assets/{img,js,scss}/**/*'
-  ],
-  sass: [
-    'bower_components/foundation-sites/scss',
-    'bower_components/motion-ui/src/'
-  ],
-  javascript: [
-    'bower_components/jquery/dist/jquery.js',
-    'bower_components/what-input/what-input.js',
-    'bower_components/foundation-sites/js/foundation.core.js',
-    'bower_components/foundation-sites/js/foundation.util.*.js',
-    // Paths to individual JS components defined below
-    'bower_components/foundation-sites/js/foundation.abide.js',
-    'bower_components/foundation-sites/js/foundation.accordion.js',
-    'bower_components/foundation-sites/js/foundation.accordionMenu.js',
-    'bower_components/foundation-sites/js/foundation.drilldown.js',
-    'bower_components/foundation-sites/js/foundation.dropdown.js',
-    'bower_components/foundation-sites/js/foundation.dropdownMenu.js',
-    'bower_components/foundation-sites/js/foundation.equalizer.js',
-    'bower_components/foundation-sites/js/foundation.interchange.js',
-    'bower_components/foundation-sites/js/foundation.magellan.js',
-    'bower_components/foundation-sites/js/foundation.offcanvas.js',
-    'bower_components/foundation-sites/js/foundation.orbit.js',
-    'bower_components/foundation-sites/js/foundation.responsiveMenu.js',
-    'bower_components/foundation-sites/js/foundation.responsiveToggle.js',
-    'bower_components/foundation-sites/js/foundation.reveal.js',
-    'bower_components/foundation-sites/js/foundation.slider.js',
-    'bower_components/foundation-sites/js/foundation.sticky.js',
-    'bower_components/foundation-sites/js/foundation.tabs.js',
-    'bower_components/foundation-sites/js/foundation.toggler.js',
-    'bower_components/foundation-sites/js/foundation.tooltip.js',
-    'src/assets/js/**/!(app).js',
-    'src/assets/js/app.js'
-  ]
-};
+var prodBuild = false;
 
-// Delete the "dist" folder
-// This happens every time a build starts
-gulp.task('clean', function(done) {
-  rimraf('assets/*', done);
+// /////////////////////////////////////////////////////////////////////////////
+// ------------------------- Helper functions --------------------------------//
+// ---------------------------------------------------------------------------//
+
+function readPackage () {
+  pkg = JSON.parse(fs.readFileSync('package.json'));
+}
+readPackage();
+
+// /////////////////////////////////////////////////////////////////////////////
+// ------------------------- Callable tasks ----------------------------------//
+// ---------------------------------------------------------------------------//
+// gulp.task('default', ['clean'], function () {
+
+gulp.task('default', function () {
+  prodBuild = true;
+  gulp.start('build');
 });
 
-// Browser Sync wrapper task 
-// allows for proper injection of css files
-gulp.task('reload', function(cb) {
-  browser.reload();
-  cb();
+gulp.task('serve', ['vendorScripts', 'phr-icons:catalog', 'javascript', 'styles', 'jekyll'], function () {
+  browserSync({
+    port: 3000,
+    server: {
+      baseDir: ['.tmp', '_site'],
+      routes: {
+        '/node_modules': './node_modules'
+      },
+      middleware: PHR_ADDONS.graphicsMiddleware(fs)
+    }
+  });
+
+  // watch for changes
+  gulp.watch([
+    'app/**/*.html',
+    'app/**/*.md',
+    'app/assets/graphics/**/*',
+    '!app/assets/graphics/collecticons/**/*'
+  ], ['jekyll', reload]);
+
+  gulp.watch('app/assets/graphics/collecticons/**', ['collecticons']);
+
+  gulp.watch('app/assets/styles/**/*.scss', ['styles']);
+  gulp.watch('package.json', ['vendorScripts']);
 });
 
-// Copy files out of the assets folder
-// This task skips over the "img", "js", and "scss" folders, which are parsed separately
-gulp.task('copy', function() {
-  return gulp.src(PATHS.assets)
-    .pipe(gulp.dest('assets'));
+gulp.task('clean', function () {
+  return del(['.tmp', '_site'])
+    .then(function () {
+      $.cache.clearAll();
+    });
 });
 
-// Copy page templates into finished HTML files
-//gulp.task('pages', function() {
-//  return gulp.src('src/pages/**/*.{html,hbs,handlebars}')
-//    .pipe(panini({
-//      root: 'src/pages/',
-//      layouts: 'src/layouts/',
-//      partials: 'src/partials/',
-//      data: 'src/data/',
-//      helpers: 'src/helpers/'
-//    }))
-//    .pipe(gulp.dest('dist'));
-//});
+// /////////////////////////////////////////////////////////////////////////////
+// ------------------------- Browserify tasks --------------------------------//
+// ------------------- (Not to be called directly) ---------------------------//
+// ---------------------------------------------------------------------------//
 
-
-//gulp.task('pages:reset', function(cb) {
-//  panini.refresh();
-//  gulp.run('pages', cb);
-//});
-
-gulp.task('styleguide', function(cb) {
-  sherpa('src/styleguide/index.md', {
-    output: 'styleguide.html',
-    template: 'src/styleguide/template.html'
-  }, cb);
-});
-
-// Compile Sass into CSS
-// In production, the CSS is compressed
-gulp.task('sass', function() {
-  var uncss = $.if(isProduction, $.uncss({
-    html: ['_site/**/*.html'],
-    ignore: [
-      new RegExp('^meta\..*'),
-      new RegExp('^\.is-.*')
-    ]
+// Compiles the user's script files to bundle.js.
+// When including the file in the index.html we need to refer to bundle.js not
+// main.js
+gulp.task('javascript', function () {
+  var watcher = watchify(browserify({
+    entries: ['./app/assets/scripts/main.js'],
+    debug: true,
+    cache: {},
+    packageCache: {},
+    fullPaths: true
   }));
 
-  var minifycss = $.if(isProduction, $.minifyCss());
+  function bundler () {
+    if (pkg.dependencies) {
+      watcher.external(Object.keys(pkg.dependencies));
+    }
+    return watcher.bundle()
+      .on('error', function (e) {
+        notifier.notify({
+          title: 'Oops! Browserify errored:',
+          message: e.message
+        });
+        console.log('Javascript error:', e);
+        if (prodBuild) {
+          process.exit(1);
+        }
+        // Allows the watch to continue.
+        this.emit('end');
+      })
+      .pipe(source('bundle.js'))
+      .pipe(buffer())
+      // Source maps.
+      .pipe(sourcemaps.init({loadMaps: true}))
+      .pipe(sourcemaps.write('./'))
+      .pipe(gulp.dest('.tmp/assets/scripts'))
+      .pipe(reload({stream: true}));
+  }
 
-  return gulp.src('src/assets/scss/app.scss')
-    .pipe($.sourcemaps.init())
-    .pipe($.sass({
-      includePaths: PATHS.sass
-    })
-      .on('error', $.sass.logError))
-    .pipe($.autoprefixer({
-      browsers: COMPATIBILITY
-    }))
-    .pipe(uncss)
-    .pipe(minifycss)
-    .pipe($.if(!isProduction, $.sourcemaps.write()))
-    .pipe(gulp.dest('assets/css'))
-    .pipe(browser.reload({stream: true}));
+  watcher
+  .on('log', gutil.log)
+  .on('update', bundler);
+
+  return bundler();
 });
 
-// Combine JavaScript into one file
-// In production, the file is minified
-gulp.task('javascript', function() {
-  var uglify = $.if(isProduction, $.uglify()
-    .on('error', function (e) {
-      console.log(e);
-    }));
-
-  return gulp.src(PATHS.javascript)
-    .pipe($.sourcemaps.init())
-    .pipe($.concat('app.js'))
-    .pipe(uglify)
-    .pipe($.if(!isProduction, $.sourcemaps.write()))
-    .pipe(gulp.dest('assets/js'));
+// Vendor scripts. Basically all the dependencies in the package.js.
+// Therefore be careful and keep the dependencies clean.
+gulp.task('vendorScripts', function () {
+  // Ensure package is updated.
+  readPackage();
+  var vb = browserify({
+    debug: true,
+    require: pkg.dependencies ? Object.keys(pkg.dependencies) : []
+  });
+  return vb.bundle()
+    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+    .pipe(source('vendor.js'))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest('.tmp/assets/scripts/'))
+    .pipe(reload({stream: true}));
 });
 
-// Copy images to the "dist" folder
-// In production, the images are compressed
-gulp.task('images', function() {
-  var imagemin = $.if(isProduction, $.imagemin({
-    progressive: true
-  }));
+// /////////////////////////////////////////////////////////////////////////////
+// ------------------------ Collecticon tasks --------------------------------//
+// -------------------- (Font generation related) ----------------------------//
+// ---------------------------------------------------------------------------//
+gulp.task('collecticons', function (done) {
+  var args = [
+    'node_modules/collecticons-processor/bin/collecticons.js',
+    'compile',
+    'app/assets/graphics/collecticons/',
+    '--font-embed',
+    '--font-dest', 'app/assets/fonts',
+    '--font-name', 'Collecticons',
+    '--font-types', 'woff',
+    '--style-format', 'sass',
+    '--style-dest', 'sandbox/assets/styles/',
+    '--style-name', 'collecticons',
+    '--class-name', 'collecticons',
+    '--author-name', 'Development Seed',
+    '--author-url', 'https://developmentseed.org/',
+    '--no-preview'
+  ];
 
-  return gulp.src('src/assets/img/**/*')
-    .pipe(imagemin)
-    .pipe(gulp.dest('assets/img'));
+  return cp.spawn('node', args, {stdio: 'inherit'})
+    .on('close', done);
 });
 
-// Build the "dist" folder by running all of the above tasks
-gulp.task('build', function(done) {
-  sequence('clean', [ 'sass', 'javascript', 'images', 'copy'], 'styleguide', done); //'pages'
+
+// /////////////////////////////////////////////////////////////////////////////
+// -------------------------- Jekyll tasks -----------------------------------//
+// ---------------------------------------------------------------------------//
+gulp.task('jekyll', function (done) {
+  var args = ['exec', 'jekyll', 'build'];
+
+  switch (process.env.DS_ENV) {
+    case 'development':
+      args.push('--config=_config.yml,_config-dev.yml');
+      break;
+    case 'staging':
+      args.push('--config=_config.yml,_config-stage.yml');
+      break;
+    case 'production':
+      args.push('--config=_config.yml');
+      break;
+  }
+
+  return cp.spawn('bundle', args, {stdio: 'inherit'})
+    .on('close', done);
 });
 
-// Start a server with LiveReload to preview the site in
-gulp.task('server', ['build'], function() {
-  browser.init({
-    server: '', port: PORT
+// //////////////////////////////////////////////////////////////////////////////
+// --------------------------- Helper tasks -----------------------------------//
+// ----------------------------------------------------------------------------//
+
+gulp.task('build', ['collecticons'], function () {
+  gulp.start(['vendorScripts', 'phr-icons:catalog', 'javascript', 'styles', 'jekyll'], function () {
+    gulp.start(['html', 'images'], function () {
+      return gulp.src('_site/**/*')
+        .pipe($.size({title: 'build', gzip: true}))
+        .pipe(exit());
+    });
   });
 });
 
-// Build the site, run the server, and watch for file changes
-gulp.task('default', ['build', 'server'], function() {
-  gulp.watch(PATHS.assets, ['copy', 'reload']);
-  //gulp.watch(['src/pages/**/*.html'], ['pages', 'reload']);
-  gulp.watch(['src/{layouts,partials}/**/*.html'], ['pages:reset', 'reload']);
-  gulp.watch(['src/assets/scss/**/{*.scss, *.sass}'], ['sass']);
-  gulp.watch(['src/assets/js/**/*.js'], ['javascript', 'reload']);
-  gulp.watch(['src/assets/img/**/*'], ['images', 'reload']);
-  gulp.watch(['src/styleguide/**'], ['styleguide', 'reload']);
+gulp.task('styles', function () {
+  return gulp.src('app/assets/styles/main.scss')
+    .pipe($.plumber(function (e) {
+      notifier.notify({
+        title: 'Oops! Sass errored:',
+        message: e.message
+      });
+      console.log('Sass error:', e.toString());
+      if (prodBuild) {
+        process.exit(1);
+      }
+      // Allows the watch to continue.
+      this.emit('end');
+    }))
+    .pipe($.sourcemaps.init())
+    .pipe($.sass({
+      outputStyle: 'expanded',
+      precision: 10,
+      functions: {
+        'urlencode($url)': function (url) {
+          var v = new SassString();
+          v.setValue(encodeURIComponent(url.getValue()));
+          return v;
+        }
+      },
+      includePaths: require('node-bourbon').with('.', 'node_modules/jeet/scss', PHR_ADDONS.scssPath)
+    }))
+    .pipe($.sourcemaps.write())
+    .pipe(gulp.dest('.tmp/assets/styles'))
+    .pipe(reload({stream: true}));
+});
+
+// After being rendered by jekyll process the html files. (merge css files, etc)
+gulp.task('html', function () {
+  var jkConf = YAML.load('_config.yml');
+  return gulp.src('_site/**/*.html')
+    .pipe($.useref({searchPath: ['.tmp', 'app', '.']}))
+    .pipe($.if('*.js', $.uglify()))
+    .pipe($.if('*.css', $.csso()))
+    .pipe($.if(/\.(css|js)$/, rev()))
+    .pipe(revReplace({prefix: jkConf.baseurl}))
+    .pipe(gulp.dest('_site'));
+});
+
+// Compress images.
+gulp.task('images', function () {
+  return gulp.src(['_site/assets/graphics/**/*', PHR_ADDONS.graphicsPath + '/**/*'])
+    .pipe($.cache($.imagemin({
+      progressive: true,
+      interlaced: true,
+      // don't remove IDs from SVGs, they are often used
+      // as hooks for embedding and styling
+      svgoPlugins: [{cleanupIDs: false}]
+    })))
+    .pipe(gulp.dest('_site/assets/graphics'));
+});
+
+// Create the icons catalog for the showcase.
+gulp.task('phr-icons:catalog', function (done) {
+  let data = fs.readFileSync(PHR_ADDONS.scssPath + '/phr-design-system/_phr-icons.scss', 'utf8');
+  let regex = new RegExp('%(phr-icon-[a-z0-9-]+) {', 'mg');
+
+  let icons = [];
+  do {
+    let matches = regex.exec(data);
+    if (!matches) break;
+
+    icons.push(matches[1]);
+  } while (true);
+
+  fs.mkdir('app/_data', (err, res) => {
+    if (err && err.code !== 'EEXIST') {
+      console.log('err', err);
+      if (prodBuild) {
+        process.exit(1);
+      }
+      this.emit('end');
+      return done();
+    }
+    fs.writeFileSync('app/_data/phr-icons-catalog.json', JSON.stringify(icons));
+    done();
+  });
 });
