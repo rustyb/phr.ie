@@ -17,7 +17,7 @@ title: Blog
 	<p>{{post.teaser}}</p>
 	{%else%}
 	{{post.excerpt}}
-	{% endif %} <a class="button success" href="{{post.url |prepend: site.baseurl}}#title">Continue Reading</a>
+	{% endif %} <a class="button success button--primary-bounded" href="{{post.url |prepend: site.baseurl}}#title">Continue Reading</a>
 	
 </article>
 {% endfor %}

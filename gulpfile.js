@@ -55,12 +55,12 @@ readPackage();
 // ---------------------------------------------------------------------------//
 // gulp.task('default', ['clean'], function () {
 
-gulp.task('default', function () {
+gulp.task('default', ['clean'], function () {
   prodBuild = true;
   gulp.start('build');
 });
 
-gulp.task('serve', ['vendorScripts', 'phr-icons:catalog', 'javascript', 'styles', 'jekyll'], function () {
+gulp.task('serve', ['vendorScripts', 'javascript', 'styles', 'jekyll'], function () {
   browserSync({
     port: 3000,
     server: {

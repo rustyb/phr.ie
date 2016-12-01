@@ -1,42 +1,7 @@
-<footer class="row" style="padding-top:3em;">
-<div class="small-12 medium-4 columns small-centered">
-  <div class="callout large radius text-center" style="border: 1px solid #D22027;border-top:5px solid #D22027">
-    <strong>{{ site.title }}</strong>
-    <p>If you like what you've read, why not contact us at <br/><a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
+<footer class="page__footer">
+  <div class="limiter">
+    <p class="copyright dark">If you like what you've read, why not contact us at <a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
   </div>
-</div>
-
-<!--  <div class="large-12 columns">
-      <div class="large-4 columns">
-        <ul class="contact-list">
-          <li>{{ site.title }}</li>
-          <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
-        </ul>
-      </div>
-
-      <div class="large-4 columns">
-        <ul class="social-media-list">
-          {% if site.github_username %}
-          <li>
-            {% include icon-github.html username=site.github_username %}
-          </li>
-          {% endif %}
-
-          {% if site.twitter_username %}
-          <li>
-            {% include icon-twitter.html username=site.twitter_username %}
-          </li>
-          {% endif %}
-        </ul>
-      </div>
-
-      <div class="large-4 columns">
-        <p>{{ site.description }}</p>
-      </div>
-    
--->
-  </div>
-
 </footer>
 
 {% include analytics.html  %}

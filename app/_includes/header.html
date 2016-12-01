@@ -1,4 +1,41 @@
-<header class="site-header">
+<header class="page__header" role="banner">
+  <div class="limiter">
+    <div class="page__headline">
+      <div class="header-icon">
+        <h1 class="page__title">
+          <a href="{{site.baseurl}}" title="Visit Homepage">
+            <span class="mast-logo mast-logo--h">
+              <img src="/assets/graphics/layout/phr-logo-h-pos.svg" class="mast-logo__image">
+              <strong class="mast-logo__text">Panacea Health Research</strong>
+            </span>
+          </a>
+        </h1>
+      </div>
+    </div>
+    <nav class="page__prime-nav">
+      <h2 class="toggle-menu">
+        <a href="#global-menu" title="Show/hide menu" data-hook="global-menu:trigger">
+          <span>Browse</span>
+        </a>
+      </h2>
+      <div class="menu-wrapper" data-hook="global-menu:wrapper">
+      <ul class="global-menu" id="global-menu">
+        {% for my_page in site.pages %}
+        {% if my_page.title %}
+        <li><a class="global-menu-item {%if page.title == my_page.title %}state-active{% endif %}" href="{{ my_page.url | prepend: site.baseurl }}"><span>{{ my_page.title }}</span></a></li>
+        {% endif %}
+        {% endfor %}
+        <li><a class="global-menu-item" href="mailto:{{ site.email }}"><span>Contact</span></a></li>
+        
+      </ul>
+    </div>
+    </nav>
+    
+  </div>
+</header>
+
+
+<!-- <header class="site-header">
 
   
 <div class="title-bar" data-responsive-toggle="example-menu" data-hide-for="medium">
@@ -41,3 +78,4 @@
   </div>
 </div>
 </header>
+ -->
