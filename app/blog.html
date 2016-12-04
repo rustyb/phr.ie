@@ -3,22 +3,29 @@ layout: page
 title: Blog
 ---
 
-<div class="medium-9 columns">
+
 {% for post in site.posts %}
-<article class="pad4y keyline-bottom">
-	<h2 class="entry-title"><a href="{{post.url |prepend: site.baseurl}}#title">{{ post.title }}</a></h2>
-	<div class="post-meta pad1y">
-		<div class="post-date" datetime="{{post.date}}">{{post.date | date: "%b %-d, %Y"}}</div>
-		<div class="post-author"><a href="#">by {{post.author}}</a></div>
-		<div class="post-categories">CATEGORY: {{post.categories}}</div>
+<article class="blog-post">
+	<div class="post-left">
+		<header class="section__header">
+	        <small class="section--label">{{post.categories}}</small>
+	        <h2 class="section__title"><a href="{{post.url |prepend: site.baseurl}}#title">{{ post.title }}</a></h2>
+
+	  </header>
+		<div class="post-meta pad1y">
+			<div class="post-date" datetime="{{post.date}}">{{post.date | date: "%b %-d, %Y"}}</div>
+			<div class="post-author">by {{post.author}}</div>
+		</div>
+
+		<div class="copy prose">
+			{% if post.teaser %}
+				<p>{{post.teaser}}</p>
+			{%else%}
+				{{post.excerpt}}
+			{% endif %}
+			<a class="button success button--primary-bounded" href="{{post.url |prepend: site.baseurl}}#title">Continue Reading</a>
+		</div>
 	</div>
-	
-	{% if post.teaser %}
-	<p>{{post.teaser}}</p>
-	{%else%}
-	{{post.excerpt}}
-	{% endif %} <a class="button success button--primary-bounded" href="{{post.url |prepend: site.baseurl}}#title">Continue Reading</a>
-	
+	<div class="blog-item-image image-right" style="background-image:url({{post.image | prepend: '/img/' | prepend: site.baseurl}})"></div>
 </article>
 {% endfor %}
-</div>
