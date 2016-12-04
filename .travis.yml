@@ -6,7 +6,7 @@ env:
   - CXX=g++-4.8
   - GH_REF=github.com/rustyb/phr.ie.git
   - DEPLOY_BRANCH=design-system
-  - secure: YVCgynbrl58SuT6g3Gr62Z7Zz8Y0HMhZK4Bw5iYprMU4RMmV/y2UJey1sbRQxI8by9OOA3d4KTOua+jiiQa375NUyl4+3mP0EbG18W6gDSt71Pw/BsCCZAHrQQerSG+tkEBXyFnsoR0bXTVCcEuZ/bQZtOx3KRqbM9mO/4jd9EToJwgvOHy3+vGkenXzGaXz5Alczm4GiXvJEO8xho+23I52LIDDH43QqtVezmqXQzt/zNHEMxKMy71fjlDEZ7cNSCKir60hQgTmpFfIG/8ObuxPXL0yEhlWge1X35vV+5xaMrOxBtv+S41aYvSTxJqaVkGj/hZF/CJRzJt48T7E+OK6XlTf3Oa/8ABZhFZB84pL3k383uEorPFjYoKwiXPT0k0KKy4rbQmEoD1AqAfYT9siIIz2kIY1mdEYPOnyN0CQ9Zc5I07DLTXWvJFicpgB7eipm/T5AY7zsmxL5KeJXFeYhtNuQDemqkSnEmaGffGxAIyz4HuWBlQRHbSKXJHYbpGsjaDFAebscWFRUXB70LNWnTY0aVbdkQAnT2HrcAr5aaOw80kfnFuqUJTThFLOp5dy7Idg/7lCS1RQURX3zvDSztgxfgnOKvP6tYm5E+hg95yQ8ehYIAbATXTng3y+8E5okb0JO0H4GHhw2D7EhSOoGOjwSCwh8/UiDTUUQt8=
+  - secure: E2tIjpKEo+UPIlEJTVoIHAmwj9y5jbaGkDVyVT5Zq7+ldodmX7BxNvJ9nltLarIL44/wq65wZn2RgnQa5ujneAPiIOSM8pzqJervrIJQYvkKKfRezayvwKnFEFteTYUjWae73M5hFx2h6rsBa2wAJSL+IxCvC3UCr/RID7vs8wb7HZv6ZETwKxzg1bH+HciByqqLtBgwgM7+tKkn3e4+0+9VLndNo47dgF9ogahDHx9SV2iEa1gr6p7CLPm3yGXzvYD3jbDv2FO2P0Khq4YF8li3TqLANZgYHbuS5Z68di2VNDzToeo2uk6UMvWRUAj4giMPzVxIyqTVLts2qhm2b92yfb5vJclxaBubvlyB//QmnRAGaYGfqN1UhfcVnqvbCXMOFgdZKFVr3m7OrOk3Ud/MugTpRmEOM2QhxZRyz8Hvjrbcttl4C5GtxHeoU+8+an9urDeKqIf7g5KgnCiBVsQwpX4gwThmYhRCKDIlm8jZ+WrnnrYU5fqAFSdo3qK6ejBNTeXIB6Z2m/cP0bAaz62jqKPw0AE/6qKeNq4jGXPGAXiSBClPPsJ5PjqLBPxp/nRqUCV3shh7wlWtHyB1Rzrnh7VkEASjbIIPcQQrXQKa26KZCHHqQI4rpe0HVCFsIE2QhnVmz8xlpKd/T85UCwza+4EhP+wNqlIGUqSonLs=
 addons:
   apt:
     sources:
@@ -27,3 +27,9 @@ script:
 - npm run build
 after_success:
 - "./.build_scripts/deploy.sh"
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: ".build_scripts/deploy.sh"
+  on:
+    branch: "${DEPLOY_BRANCH}"
