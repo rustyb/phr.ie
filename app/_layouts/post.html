@@ -1,18 +1,19 @@
 ---
 layout: default
 ---
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+<article class="post-page prose prose--responsive" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <header class="post-header row">
-    <!--<h1 id="title" class="post-title" itemprop="name headline">{{ page.title }}</h1>-->
+  <header class="post--header">
+  
+    <h2 class="section__title">{{ page.title }}</h2>
 	<div class="post-meta">
 		<div class="post-date" datetime="{{post.date}}">{{page.date | date: "%b %-d, %Y"}}</div>
-		<div class="post-author"><a href="#">by {{page.author}}</a></div>
+		<div class="post-author">by {{page.author}}</div>
 	</div>
-	<div class="post-categories">CATEGORY: {{page.categories}}</div>
+	<span class="post--header--label">{{page.categories}}</span>
   </header>
 
-  <div class="post-content row" itemprop="articleBody">
+  <div class="post--content row" itemprop="articleBody">
     {{ content }}
   </div>
 

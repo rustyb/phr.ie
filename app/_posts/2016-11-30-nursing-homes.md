@@ -23,4 +23,4 @@ In terms of the delivery of nursing homes and additional bed spaces to the marke
 
 It should be noted however that this bedspace number is as set out in planning terms. The final number of bedspaces which will be registered with HIQA may differ from the stated planning complement.
 
-For additional information on Ireland’s nursing home sector, please don’t hesitate to contact us at info@phr.ie. 
+For additional information on Ireland’s nursing home sector, please don’t hesitate to contact us at [info@phr.ie](mailto:info@phr.ie). 
