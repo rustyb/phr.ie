@@ -5,7 +5,7 @@ node_js:
 env:
   global:
   - CXX=g++-4.8
-  - GH_REF=github.com/MapLesotho/maplesotho-website.git
+  - GH_REF=github.com/rustyb/phr.ie.git
   - DEPLOY_BRANCH=design-system
   - secure: "dnnqT+R7K5Npnb+pvglfjYN7w5sX5YuBMM6E8Juw7AGh5Un502ggNnWjtVv4DGL3vj4q15kJr1+sbfQP5RHlBx196yZRljGg52f17nl8dNvIyTiwfJw2yfmGV96tT9gqLDDzAXEE4XMTMb833+LMMKeqQrY9HSdoazX4eIRkGJII5oxKCOQoOiIcL/bBcES3Bpw05AJgWkIl4Y/yQ/dGpANpKSP5I1+vT6DauD2+7wVCA76gDBUY9U4ZFVzCS5bVx7wWKbto/W7kgZ3Kw3e7OktSIOOXDcNE7vqKFIZehMvwTsxnFLwWr9B8WTeVNnjmWqFhzgJwmQ2VxbsFpBjrJETAohb6DCpdL9mbhyEVqWmNTD0fwJMZ+fsG8ogIY8HKzVa41MAtocBJCSnED+VIjg37qaygK9y7vrU7fU8a7cnz5NbppwhQn265zAP7RY6GMbc+k9jXP4L39FA1NhYLdBUBMgpvagZ+xvu9u/gAiub0LOo+60sxNcqbAX2t1JNHSJjNB76xnWtHT9557fG04b5XKOQQRc1oE8z9/2j4Z8yAijsyenIeFXgKCnChfonX3Z2Sa9jXN9wNYO1FyEyi+z6czwl22sQaiIHt3nSWo9ojcgTflFD6bVJJRexzViiSFtX8/uW5zulRB7T+/jtw1B9b2KzfoA+dRwNLO8SEP4E="
 
