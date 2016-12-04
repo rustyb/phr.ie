@@ -23,7 +23,7 @@ permalink: pretty
 
 source: app
 
-exclude: [node_modules, jekyll, etc, bower_components, src, gulpfile.js, bower.json, package.json]
+exclude: [node_modules, jekyll, etc, bower_components, src, gulpfile.js, bower.json, package.json, set_up_db_for_census.md]
 
 defaults:
   -
