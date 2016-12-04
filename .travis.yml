@@ -23,6 +23,7 @@ cache:
     - bundle/cache
 
 before_install:
+- rvm install 2.1
 - chmod +x ./.build_scripts/deploy.sh
 
 
