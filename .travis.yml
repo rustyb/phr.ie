@@ -1,36 +1,29 @@
 language: node_js
 node_js:
-  - "4"
-
+- '4'
 env:
   global:
   - CXX=g++-4.8
   - GH_REF=github.com/rustyb/phr.ie.git
   - DEPLOY_BRANCH=design-system
-  - secure: "dnnqT+R7K5Npnb+pvglfjYN7w5sX5YuBMM6E8Juw7AGh5Un502ggNnWjtVv4DGL3vj4q15kJr1+sbfQP5RHlBx196yZRljGg52f17nl8dNvIyTiwfJw2yfmGV96tT9gqLDDzAXEE4XMTMb833+LMMKeqQrY9HSdoazX4eIRkGJII5oxKCOQoOiIcL/bBcES3Bpw05AJgWkIl4Y/yQ/dGpANpKSP5I1+vT6DauD2+7wVCA76gDBUY9U4ZFVzCS5bVx7wWKbto/W7kgZ3Kw3e7OktSIOOXDcNE7vqKFIZehMvwTsxnFLwWr9B8WTeVNnjmWqFhzgJwmQ2VxbsFpBjrJETAohb6DCpdL9mbhyEVqWmNTD0fwJMZ+fsG8ogIY8HKzVa41MAtocBJCSnED+VIjg37qaygK9y7vrU7fU8a7cnz5NbppwhQn265zAP7RY6GMbc+k9jXP4L39FA1NhYLdBUBMgpvagZ+xvu9u/gAiub0LOo+60sxNcqbAX2t1JNHSJjNB76xnWtHT9557fG04b5XKOQQRc1oE8z9/2j4Z8yAijsyenIeFXgKCnChfonX3Z2Sa9jXN9wNYO1FyEyi+z6czwl22sQaiIHt3nSWo9ojcgTflFD6bVJJRexzViiSFtX8/uW5zulRB7T+/jtw1B9b2KzfoA+dRwNLO8SEP4E="
-
+  - secure: YVCgynbrl58SuT6g3Gr62Z7Zz8Y0HMhZK4Bw5iYprMU4RMmV/y2UJey1sbRQxI8by9OOA3d4KTOua+jiiQa375NUyl4+3mP0EbG18W6gDSt71Pw/BsCCZAHrQQerSG+tkEBXyFnsoR0bXTVCcEuZ/bQZtOx3KRqbM9mO/4jd9EToJwgvOHy3+vGkenXzGaXz5Alczm4GiXvJEO8xho+23I52LIDDH43QqtVezmqXQzt/zNHEMxKMy71fjlDEZ7cNSCKir60hQgTmpFfIG/8ObuxPXL0yEhlWge1X35vV+5xaMrOxBtv+S41aYvSTxJqaVkGj/hZF/CJRzJt48T7E+OK6XlTf3Oa/8ABZhFZB84pL3k383uEorPFjYoKwiXPT0k0KKy4rbQmEoD1AqAfYT9siIIz2kIY1mdEYPOnyN0CQ9Zc5I07DLTXWvJFicpgB7eipm/T5AY7zsmxL5KeJXFeYhtNuQDemqkSnEmaGffGxAIyz4HuWBlQRHbSKXJHYbpGsjaDFAebscWFRUXB70LNWnTY0aVbdkQAnT2HrcAr5aaOw80kfnFuqUJTThFLOp5dy7Idg/7lCS1RQURX3zvDSztgxfgnOKvP6tYm5E+hg95yQ8ehYIAbATXTng3y+8E5okb0JO0H4GHhw2D7EhSOoGOjwSCwh8/UiDTUUQt8=
 addons:
   apt:
     sources:
-      - ubuntu-toolchain-r-test
+    - ubuntu-toolchain-r-test
     packages:
-      - g++-4.8
-
+    - g++-4.8
 cache:
   apt: true
   directories:
-    - node_modules
-    - bundle/cache
-
+  - node_modules
+  - bundle/cache
 before_install:
 - rvm install 2.1
 - chmod +x ./.build_scripts/deploy.sh
-
 before_script:
-  - gem install jekyll
-
+- gem install jekyll
 script:
 - npm run build
-
 after_success:
-- ./.build_scripts/deploy.sh
+- "./.build_scripts/deploy.sh"
