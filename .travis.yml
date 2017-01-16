@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-- '4'
+- '5'
 env:
   global:
   - CXX=g++-4.8
@@ -19,7 +19,7 @@ cache:
   - node_modules
   - bundle/cache
 before_install:
-- rvm install 2.1
+- rvm install 2.3
 - chmod +x ./.build_scripts/deploy.sh
 before_script:
 - gem install jekyll
