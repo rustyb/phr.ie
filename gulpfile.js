@@ -217,7 +217,7 @@ gulp.task('jekyll', function (done) {
 
 gulp.task('build', ['collecticons'], function () {
   gulp.start(['vendorScripts', 'phr-icons:catalog', 'javascript', 'styles', 'jekyll'], function () {
-    gulp.start(['html', 'images'], function () {
+    gulp.start(['html'], function () { //'images'
       return gulp.src('_site/**/*')
         .pipe($.size({title: 'build', gzip: true}))
         .pipe(exit());

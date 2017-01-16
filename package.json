@@ -1,14 +1,14 @@
 {
-  "name": "foundation-zurb-template",
+  "name": "phr-website",
   "version": "1.0.0",
-  "description": "Official ZURB Template for Foundation for Sites.",
+  "description": "PHR.ie website",
   "main": "gulpfile.js",
   "scripts": {
     "serve": "gulp collecticons && gulp serve",
     "start": "gulp",
     "build": "gulp build --production"
   },
-  "author": "ZURB <foundation@zurb.com>",
+  "author": "Colin Broderick <colin@phr.ie>",
   "license": "MIT",
   "browserify": {
     "transform": [
@@ -73,11 +73,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/zurb/foundation-zurb-template.git"
+    "url": "https://github.com/rustyb/phr.ie.git"
   },
   "bugs": {
-    "url": "https://github.com/zurb/foundation-sites/issues",
-    "email": "foundation@zurb.com"
+    "url": "https://github.com/rustyb/phr.ie/issues",
+    "email": "colin@phr.ie"
   },
   "private": true,
   "dependencies": {
