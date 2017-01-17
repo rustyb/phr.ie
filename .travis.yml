@@ -19,12 +19,14 @@ cache:
   - node_modules
   - bundle/cache
 before_install:
-- rvm install 2.2
-- chmod +x ./.build_scripts/deploy.sh
+  - rvm install 2.2
+  - chmod +x ./.build_scripts/deploy.sh
 before_script:
-- gem install jekyll
+  - gem install bundler
+  - bundle install
+  - gem install jekyll
 script:
-- npm run build
+  - npm run build
 # after_success:
 # - "./.build_scripts/deploy.sh"
 
