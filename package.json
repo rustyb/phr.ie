@@ -6,7 +6,8 @@
   "scripts": {
     "serve": "gulp collecticons && gulp serve",
     "start": "gulp",
-    "build": "gulp build --production"
+    "build": "DS_ENV=production NODE_ENV=production gulp",
+    "build-prod": "gulp build --production"
   },
   "author": "Colin Broderick <colin@phr.ie>",
   "license": "MIT",
@@ -33,10 +34,10 @@
     "browser-sync": "^2.10.0",
     "browserify": "^13.1.1",
     "child_process": "^1.0.2",
-    "collecticons-processor": "^2.0.0",
     "del": "^2.2.2",
     "envify": "^4.0.0",
     "gulp": "^3.9.1",
+    "collecticons-processor": "^3.0.0",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-cache": "^0.4.5",
     "gulp-concat": "^2.5.2",
@@ -81,6 +82,7 @@
   },
   "private": true,
   "dependencies": {
+    "libxmljs": "git+https://github.com/libxmljs/libxmljs.git#v0.18.3",
     "phr-design-system": "git+https://github.com/rustyb/phr-design-system.git",
     "react": "^15.0.1",
     "react-addons-css-transition-group": "^15.0.2",
