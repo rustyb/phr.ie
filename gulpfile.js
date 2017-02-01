@@ -20,6 +20,7 @@ var YAML = require('yamljs');
 var SassString = require('node-sass').types.String;
 var PHR_ADDONS = require('phr-design-system/gulp-addons');
 
+var runSequence = require('run-sequence').use(gulp);
 // /////////////////////////////////////////////////////////////////////////////
 // --------------------------- Variables -------------------------------------//
 // ---------------------------------------------------------------------------//
@@ -57,6 +58,7 @@ readPackage();
 
 gulp.task('default', ['clean'], function () {
   prodBuild = true;
+  console.log('PRODBUILD SET TO TRUE\n')
   gulp.start('build');
 });
 
@@ -102,13 +104,18 @@ gulp.task('clean', function () {
 // When including the file in the index.html we need to refer to bundle.js not
 // main.js
 gulp.task('javascript', function () {
+  console.log('bundling')
   var watcher = watchify(browserify({
     entries: ['./app/assets/scripts/main.js'],
     debug: true,
     cache: {},
     packageCache: {},
     fullPaths: true
-  }));
+  }), {poll: false});
+
+  watcher
+  .on('log', gutil.log)
+  .on('update', bundler);
 
   function bundler () {
     if (pkg.dependencies) {
@@ -129,19 +136,16 @@ gulp.task('javascript', function () {
       })
       .pipe(source('bundle.js'))
       .pipe(buffer())
-      // Source maps.
+      // // Source maps.
       .pipe(sourcemaps.init({loadMaps: true}))
       .pipe(sourcemaps.write('./'))
       .pipe(gulp.dest('.tmp/assets/scripts'))
       .pipe(reload({stream: true}));
   }
 
-  watcher
-  .on('log', gutil.log)
-  .on('update', bundler);
-
   return bundler();
 });
+
 
 // Vendor scripts. Basically all the dependencies in the package.js.
 // Therefore be careful and keep the dependencies clean.
@@ -176,7 +180,7 @@ gulp.task('collecticons', function (done) {
     '--font-name', 'Collecticons',
     '--font-types', 'woff',
     '--style-format', 'sass',
-    '--style-dest', 'sandbox/assets/styles/',
+    '--style-dest', 'app/assets/styles/',
     '--style-name', 'collecticons',
     '--class-name', 'collecticons',
     '--author-name', 'Development Seed',
@@ -215,9 +219,22 @@ gulp.task('jekyll', function (done) {
 // --------------------------- Helper tasks -----------------------------------//
 // ----------------------------------------------------------------------------//
 
+// gulp.task('build', function (done) {
+//   runSequence(['vendorScripts', 'phr-icons:catalog', 'javascript', 'styles', 'jekyll'], done);
+//   //runSequence('collecticons', ['vendorScripts', 'phr-icons:catalog', 'javascript', 'styles', 'jekyll'], ['html', 'images'], done);
+//   // gulp.start(['vendorScripts', 'phr-icons:catalog', 'javascript', 'styles', 'jekyll'], function () {
+//     // gulp.start('html', function () { //['html', 'images']'images'
+//     //   return gulp.src('_site/**/*')
+//     //     .pipe($.size({title: 'build', gzip: true}))
+//     //     .pipe(exit());
+//     // });
+//   // });
+//   // done();
+// });
+
 gulp.task('build', ['collecticons'], function () {
-  gulp.start(['vendorScripts', 'phr-icons:catalog', 'javascript', 'styles', 'jekyll'], function () {
-    gulp.start(['html'], function () { //'images'
+  gulp.start(['vendorScripts', 'javascript', 'styles', 'jekyll'], function () {
+    gulp.start(['html', 'images'], function () {
       return gulp.src('_site/**/*')
         .pipe($.size({title: 'build', gzip: true}))
         .pipe(exit());
@@ -250,7 +267,7 @@ gulp.task('styles', function () {
           return v;
         }
       },
-      includePaths: require('node-bourbon').with('.', 'node_modules/jeet/scss', PHR_ADDONS.scssPath)
+      includePaths: require('node-bourbon').with('node_modules/jeet/scss', PHR_ADDONS.scssPath)
     }))
     .pipe($.sourcemaps.write())
     .pipe(gulp.dest('.tmp/assets/styles'))
@@ -271,14 +288,15 @@ gulp.task('html', function () {
 
 // Compress images.
 gulp.task('images', function () {
-  return gulp.src(['_site/assets/graphics/**/*', PHR_ADDONS.graphicsPath + '/**/*'])
-    .pipe($.cache($.imagemin({
-      progressive: true,
-      interlaced: true,
+  return gulp.src(['app/assets/graphics/**/*', PHR_ADDONS.graphicsPath + '/**/*'])
+    .pipe($.cache($.imagemin([
+      $.imagemin.gifsicle({interlaced: true}),
+      $.imagemin.jpegtran({progressive: true}),
+      // $.imagemin.optipng({optimizationLevel: 5}),
       // don't remove IDs from SVGs, they are often used
       // as hooks for embedding and styling
-      svgoPlugins: [{cleanupIDs: false}]
-    })))
+      $.imagemin.svgo({plugins: [{cleanupIDs: false}]})
+    ])))
     .pipe(gulp.dest('_site/assets/graphics'));
 });
 

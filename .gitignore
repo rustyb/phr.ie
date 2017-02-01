@@ -83,3 +83,5 @@ _site/
 .sass-cache/
 .jekyll-metadata
 app/data
+old-data
+sandbox
