@@ -85,6 +85,11 @@
     text-align: center;
     margin-top: 2rem;
   }
+
+  a {
+      color:#fff;
+      border-bottom: 0.0625rem solid #dcdcdc;
+  }
   // .heart::before {
   //   @extend %phr-icon-heart-full;
   //   opacity: 0.8;

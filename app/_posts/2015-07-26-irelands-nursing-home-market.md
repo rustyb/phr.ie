@@ -3,7 +3,7 @@ layout: post
 title:  "Ireland’s Nursing Home Market"
 date:   2016-07-26 21:29:18 +0100
 categories: demographics
-image: "blog.png"
+image: "blog.jpg"
 tags: 
     - demographics 
     - map 

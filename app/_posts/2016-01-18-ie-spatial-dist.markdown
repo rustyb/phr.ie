@@ -3,7 +3,7 @@ layout: post
 title:  "Ireland’s Older Demographic Spatial Distribution"
 date:   2016-01-18 21:19:18 +0100
 categories: demographics
-image: "blog.png"
+image: "blog.jpg"
 tags: 
     - demographics 
     - map 

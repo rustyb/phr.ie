@@ -157,7 +157,9 @@ a.dark:hover,
     > img {
       height: 100%;
     }
-
+    &.img > img {
+        height: auto;
+    }
     @include media(medium-up) {
       height: auto;
     }
@@ -238,14 +240,14 @@ a.dark:hover,
   .section__copy {
     @include media(medium-up) {
       @include col(6/12);
-      @include shift(-6/12);
+      // @include shift(-6/12);
     }
   }
 
   .section__media {
     @include media(medium-up) {
       @include col(6/12);
-      @include shift(6.5/12);
+      // @include shift(6.5/12);
     }
 
     .media {
@@ -657,6 +659,10 @@ a.dark:hover,
 
   .post--content {
     @include center(800px);
+
+    a {
+      border-bottom: 0.0625rem solid #dcdcdc;
+    }
   }
   
 }
