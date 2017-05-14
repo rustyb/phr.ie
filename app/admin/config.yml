@@ -2,6 +2,7 @@ backend:
   name: github
   repo: rustyb/phr.ie # Path to your Github repository
   branch: design-system # Branch to update
+  site_id: smuggler-selections-53083.netlify.com # netlify auth url
 
 # publish_mode: editorial_workflow
 
