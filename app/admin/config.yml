@@ -3,7 +3,7 @@ backend:
   repo: rustyb/phr.ie # Path to your Github repository
   branch: design-system # Branch to update
 
-publish_mode: editorial_workflow
+# publish_mode: editorial_workflow
 
 media_folder: "app/assets/graphics/content"
 public_folder: "/assets/graphics/content"
