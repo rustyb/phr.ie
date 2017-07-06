@@ -133,3 +133,15 @@
     background: rgba($base-color, 0.08);
   }
 }
+
+.video-intro {
+  p {
+    max-width: 400px;
+  }
+}
+
+.video-box {
+  padding: 30px;
+  background-color: rgba(255,255,255,0.8);
+  width: 40%;
+}

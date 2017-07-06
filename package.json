@@ -38,7 +38,6 @@
     "del": "^2.2.2",
     "envify": "^4.0.0",
     "gulp": "^3.9.1",
-    "collecticons-processor": "^3.0.0",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-cache": "^0.4.5",
     "gulp-concat": "^2.5.2",
@@ -84,8 +83,8 @@
   "private": true,
   "dependencies": {
     "babel-polyfill": "^6.20.0",
-    "lodash.defaultsdeep": "^4.6.0",
     "libxmljs": "git+https://github.com/libxmljs/libxmljs.git#v0.18.3",
+    "lodash.defaultsdeep": "^4.6.0",
     "phr-design-system": "git+https://github.com/rustyb/phr-design-system.git",
     "react": "^15.0.1",
     "react-addons-css-transition-group": "^15.0.2",
