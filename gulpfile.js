@@ -20,7 +20,9 @@ var YAML = require('yamljs');
 var SassString = require('node-sass').types.String;
 var PHR_ADDONS = require('phr-design-system/gulp-addons');
 
-var runSequence = require('run-sequence').use(gulp);
+var replace = require('gulp-replace');
+
+// var runSequence = require('run-sequence').use(gulp);
 // /////////////////////////////////////////////////////////////////////////////
 // --------------------------- Variables -------------------------------------//
 // ---------------------------------------------------------------------------//
@@ -58,9 +60,9 @@ readPackage();
 
 gulp.task('default', ['clean'], function () {
   prodBuild = true;
-  console.log('PRODBUILD SET TO TRUE\n')
   gulp.start('build');
 });
+
 
 gulp.task('serve', ['vendorScripts', 'javascript', 'styles', 'jekyll'], function () {
   browserSync({
@@ -74,10 +76,12 @@ gulp.task('serve', ['vendorScripts', 'javascript', 'styles', 'jekyll'], function
     }
   });
 
-  // watch for changes
-  gulp.watch([
+
+// watch for changes
+gulp.watch([
     'app/**/*.html',
     'app/**/*.md',
+    'app/assets/js/*.js',
     'app/assets/graphics/**/*',
     '!app/assets/graphics/collecticons/**/*'
   ], ['jekyll', reload]);
@@ -86,6 +90,7 @@ gulp.task('serve', ['vendorScripts', 'javascript', 'styles', 'jekyll'], function
 
   gulp.watch('app/assets/styles/**/*.scss', ['styles']);
   gulp.watch('package.json', ['vendorScripts']);
+
 });
 
 gulp.task('clean', function () {
@@ -104,18 +109,13 @@ gulp.task('clean', function () {
 // When including the file in the index.html we need to refer to bundle.js not
 // main.js
 gulp.task('javascript', function () {
-  console.log('bundling')
   var watcher = watchify(browserify({
     entries: ['./app/assets/scripts/main.js'],
     debug: true,
     cache: {},
     packageCache: {},
     fullPaths: true
-  }), {poll: false});
-
-  watcher
-  .on('log', gutil.log)
-  .on('update', bundler);
+  }));
 
   function bundler () {
     if (pkg.dependencies) {
@@ -136,16 +136,19 @@ gulp.task('javascript', function () {
       })
       .pipe(source('bundle.js'))
       .pipe(buffer())
-      // // Source maps.
+      // Source maps.
       .pipe(sourcemaps.init({loadMaps: true}))
       .pipe(sourcemaps.write('./'))
       .pipe(gulp.dest('.tmp/assets/scripts'))
       .pipe(reload({stream: true}));
   }
 
+  watcher
+  .on('log', gutil.log)
+  .on('update', bundler);
+
   return bundler();
 });
-
 
 // Vendor scripts. Basically all the dependencies in the package.js.
 // Therefore be careful and keep the dependencies clean.
@@ -204,10 +207,11 @@ gulp.task('jekyll', function (done) {
       args.push('--config=_config.yml,_config-dev.yml');
       break;
     case 'staging':
-      args.push('--config=_config.yml,_config-stage.yml');
+      args.push('--config=_config.yml,_config-staging.yml');
       break;
     case 'production':
       args.push('--config=_config.yml');
+      // args.push('--safe');
       break;
   }
 
@@ -219,20 +223,7 @@ gulp.task('jekyll', function (done) {
 // --------------------------- Helper tasks -----------------------------------//
 // ----------------------------------------------------------------------------//
 
-// gulp.task('build', function (done) {
-//   runSequence(['vendorScripts', 'phr-icons:catalog', 'javascript', 'styles', 'jekyll'], done);
-//   //runSequence('collecticons', ['vendorScripts', 'phr-icons:catalog', 'javascript', 'styles', 'jekyll'], ['html', 'images'], done);
-//   // gulp.start(['vendorScripts', 'phr-icons:catalog', 'javascript', 'styles', 'jekyll'], function () {
-//     // gulp.start('html', function () { //['html', 'images']'images'
-//     //   return gulp.src('_site/**/*')
-//     //     .pipe($.size({title: 'build', gzip: true}))
-//     //     .pipe(exit());
-//     // });
-//   // });
-//   // done();
-// });
-
-gulp.task('build', ['collecticons'], function () {
+gulp.task('build', function () {
   gulp.start(['vendorScripts', 'javascript', 'styles', 'jekyll'], function () {
     gulp.start(['html', 'images'], function () {
       return gulp.src('_site/**/*')
@@ -241,6 +232,16 @@ gulp.task('build', ['collecticons'], function () {
     });
   });
 });
+
+// gulp.task('build', ['collecticons'], function () {
+//   gulp.start(['vendorScripts', 'javascript', 'styles', 'jekyll'], function () {
+//     gulp.start(['html', 'images'], function () {
+//       return gulp.src('_site/**/*')
+//         .pipe($.size({title: 'build', gzip: true}))
+//         .pipe(exit());
+//     });
+//   });
+// });
 
 gulp.task('styles', function () {
   return gulp.src('app/assets/styles/main.scss')
@@ -267,7 +268,7 @@ gulp.task('styles', function () {
           return v;
         }
       },
-      includePaths: require('node-bourbon').with('node_modules/jeet/scss', PHR_ADDONS.scssPath)
+      includePaths: require('node-bourbon').with('.', 'node_modules/jeet/scss', PHR_ADDONS.scssPath)
     }))
     .pipe($.sourcemaps.write())
     .pipe(gulp.dest('.tmp/assets/styles'))
@@ -277,26 +278,29 @@ gulp.task('styles', function () {
 // After being rendered by jekyll process the html files. (merge css files, etc)
 gulp.task('html', function () {
   var jkConf = YAML.load('_config.yml');
+
+  console.log("jkConf.baseurl = ", jkConf.baseurl)
   return gulp.src('_site/**/*.html')
     .pipe($.useref({searchPath: ['.tmp', 'app', '.']}))
     .pipe($.if('*.js', $.uglify()))
     .pipe($.if('*.css', $.csso()))
     .pipe($.if(/\.(css|js)$/, rev()))
     .pipe(revReplace({prefix: jkConf.baseurl}))
+    .pipe(replace('/assets/styles/', jkConf.baseurl + '/assets/styles/'))
+    .pipe(replace('/assets/scripts/', jkConf.baseurl + '/assets/scripts/'))
     .pipe(gulp.dest('_site'));
 });
 
 // Compress images.
 gulp.task('images', function () {
-  return gulp.src(['app/assets/graphics/**/*', PHR_ADDONS.graphicsPath + '/**/*'])
-    .pipe($.cache($.imagemin([
-      $.imagemin.gifsicle({interlaced: true}),
-      $.imagemin.jpegtran({progressive: true}),
-      // $.imagemin.optipng({optimizationLevel: 5}),
+  return gulp.src(['_site/assets/graphics/**/*', PHR_ADDONS.graphicsPath + '/**/*'])
+    .pipe($.cache($.imagemin({
+      progressive: true,
+      interlaced: true,
       // don't remove IDs from SVGs, they are often used
       // as hooks for embedding and styling
-      $.imagemin.svgo({plugins: [{cleanupIDs: false}]})
-    ])))
+      svgoPlugins: [{cleanupIDs: false}]
+    })))
     .pipe(gulp.dest('_site/assets/graphics'));
 });
 
@@ -325,4 +329,17 @@ gulp.task('phr-icons:catalog', function (done) {
     fs.writeFileSync('app/_data/phr-icons-catalog.json', JSON.stringify(icons));
     done();
   });
+});
+
+gulp.task('extras', function () {
+  return gulp.src([
+    'app/**/*',
+    '!app/*.html',
+    '!app/assets/graphics/**',
+    '!app/assets/vendor/**',
+    '!app/assets/styles/**',
+    '!app/assets/scripts/**'
+  ], {
+    dot: true
+  }).pipe(gulp.dest('dist'));
 });

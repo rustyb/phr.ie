@@ -21,7 +21,7 @@
       <div class="menu-wrapper" data-hook="global-menu:wrapper">
       <ul class="global-menu" id="global-menu">
         {% for my_page in site.pages %}
-        {% if my_page.title %}
+        {% if my_page.title and my_page.no_nav != true %}
         <li><a class="global-menu-item {%if page.title == my_page.title %}state-active{% endif %}" href="{{ my_page.url | prepend: site.baseurl }}"><span>{{ my_page.title }}</span></a></li>
         {% endif %}
         {% endfor %}
