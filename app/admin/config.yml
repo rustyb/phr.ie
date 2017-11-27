@@ -1,5 +1,5 @@
 backend:
-  name: github
+  name: git-gateway
   repo: rustyb/phr.ie # Path to your Github repository
   branch: design-system # Branch to update
   site_domain: smuggler-selections-53083.netlify.com # netlify auth url see https://github.com/netlify/netlify-cms/pull/375
