@@ -20,4 +20,4 @@ The purpose of this paper is to explore the concept of ‘Social License to Oper
 
 These two technologies are currently at different maturity levels in Ireland, however, similarities in the manner in which they are perceived by communities have influenced the nature and characteristics of the permissions and infrastructure granted and developed to date. This paper will conclude with a number of recommendations as potential measures for the enhancement of community acceptance of RETS in an Irish context.
 
-[Read the paper](./Social_License_to_Operate_and_the_Sustainable_Energy_Transition_Gaynor_A_Walsh_S-D_IPI_Pleanail_Journal_2017.pdf){:class="button button--base"}
+[Read the paper](/Social_License_to_Operate_and_the_Sustainable_Energy_Transition_Gaynor_A_Walsh_S-D_IPI_Pleanail_Journal_2017.pdf){:class="button button--base"}
