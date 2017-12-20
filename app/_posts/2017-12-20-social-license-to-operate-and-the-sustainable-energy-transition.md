@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Social License to Operate and the Sustainable Energy Transition
-categories: 'energy, planning, blog'
+categories: planning
 image: /assets/graphics/content/solar-map.jpg
 tags:
   - blog
