@@ -1,0 +1,23 @@
+{
+        "interactive": false,
+        "minzoom": 8,
+        "layout": {
+            "visibility": "visible"
+        },
+        "filter": [
+            "in",
+            "$type",
+            "Point",
+            "LineString",
+            "Polygon"
+        ],
+        "type": "fill",
+        "source": "mapbox://rusty.4rvvdeih",
+        "id": "counties-c",
+        "paint": {
+            "fill-color": "hsl(326, 98%, 53%)",
+            "fill-outline-color": "hsl(326, 100%, 99%)",
+            "fill-antialias": true
+        },
+        "source-layer": "counties_c"
+    }
