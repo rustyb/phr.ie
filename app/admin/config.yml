@@ -41,6 +41,6 @@ collections: # A list of collections the CMS should be able to edit
             name: entries
             widget: list
             fields:
-              - {label: Date, name: date, widget: "datetime"}
               - {label: "Title", name: "title", widget: "string"}
+              - {label: Date, name: date, widget: "date"}
               - {label: "URL", name: "url", widget: "string"}
