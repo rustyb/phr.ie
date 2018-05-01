@@ -2,7 +2,7 @@ backend:
   name: git-gateway
   repo: rustyb/phr.ie # Path to your Github repository
   branch: design-system # Branch to update
-  site_domain: smuggler-selections-53083.netlify.com # netlify auth url see https://github.com/netlify/netlify-cms/pull/375
+  site_domain: www.phr.ie # netlify auth url see https://github.com/netlify/netlify-cms/pull/375
 
 # publish_mode: editorial_workflow
 
@@ -26,3 +26,17 @@ collections: # A list of collections the CMS should be able to edit
       - {label: "Post list teaser", name: "teaser", widget: "text"}
     meta: # Meta data fields. Just like fields, but without any preview element
       - {label: "Publish Date", name: "date", widget: "datetime", format: "YYYY-MM-DD hh:mm:ss"}
+  - name: "linkedin-posts" 
+    label: "Posts feed linking to linkedin"
+    delete: false # Prevent users from deleting documents in this collection
+    editor:
+      preview: false
+    files:
+      - name: "linkedin-posts"
+        label: "linkedin"
+        file: "app/linkedin-posts.json"
+        description: "Posts feed linking to linkedin"
+        fields:
+          - {label: Date, name: date, widget: "datetime"}
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "URL", name: "url", widget: "string"}
