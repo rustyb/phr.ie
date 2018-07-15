@@ -3,8 +3,10 @@ layout: page
 title: About
 ---
 
-PHR started out like any startup, with lots of opinionated conversation in the local watering hole that went too far and actually ended up as a business.
+PHR provides market intelligence to a variety of sectors including energy development and public health infrastructure. PHRs tools enable us to accurately map and outline the current construction market in addition to quantifying various levels of planning activity at local, regional and national level.
 
-So here we are the 2 of us - **Colin Broderick** &amp; **Stephen Walsh** - starting out on our journey to revolutionise spatial research for elderly healthcare.
+PHRs currently clients include renewable energy developers, fund managers, planning consultants as well as Irish governmental energy agencies and professional organisations.
+
+PHR was founded in 2015 by Colin Broderick & Stephen Walsh.
 
 If you are interested in working with us, please do get in contact at [**info@phr.ie**](mailto:info@phr.ie)
