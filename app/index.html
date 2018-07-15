@@ -156,7 +156,13 @@ no_row: "yes"
               
               <figure class="card__media">
                 <div class="card_thumbnail">
-                  <a href="{{post.url | prepend: site.baseurl}}#title"><img class="thumbnail" src="{{post.image | prepend: '/img/' | prepend: site.baseurl}}"></a>
+                  <a href="{{post.url | prepend: site.baseurl}}#title"><img class="thumbnail" src="
+
+                    {% if post.image contains '/assets/'' %}
+                    {{post.image | prepend: site.baseurl}}
+                    {% else %}
+                    {{post.image | prepend: '/img/' | prepend: site.baseurl}}
+                    {% endif %}"></a>
                 </div>
               </figure>
               
