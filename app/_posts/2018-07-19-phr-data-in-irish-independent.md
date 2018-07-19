@@ -4,9 +4,7 @@ title: PHR Data in Irish Independent
 categories: 'Media, Renewable Energy, Energy Storage'
 image: /assets/graphics/content/190718.png
 tags:
-  - Media
-  - Renewable Energy
-  - Energy Storage
+  - ''
 teaser: >-
   PHR was delighted to provide its overview of the Irish Energy Storage planning
   to the Irish Independent recently.
