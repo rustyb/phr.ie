@@ -1,7 +1,7 @@
 ---
 layout: post
 title: PHR Data in Irish Independent
-categories: 'Media, Renewable Energy, Energy Storage'
+categories: Energy Storage
 image: /assets/graphics/content/190718.png
 tags:
   - ''
