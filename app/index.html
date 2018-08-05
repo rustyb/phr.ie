@@ -158,7 +158,7 @@ no_row: "yes"
                 <div class="card_thumbnail">
                   <a href="{{post.url | prepend: site.baseurl}}#title"><img class="thumbnail" src="
 
-                    {% if post.image contains '/assets/'' %}
+                    {% if post.image contains '/assets/' %}
                     {{post.image | prepend: site.baseurl}}
                     {% else %}
                     {{post.image | prepend: '/img/' | prepend: site.baseurl}}
