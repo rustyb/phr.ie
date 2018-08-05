@@ -44,5 +44,5 @@ We've but together some quick screengrabs to showcase the outputs of our new too
 ![]({{site.baseurl}}/assets/graphics/content/new-tool-3.png)
 
 
-[^1]: [arrow.dit.ie/cgi/viewcontent.cgi?article=1100&context=buschmarcon](http://arrow.dit.ie/cgi/viewcontent.cgi?article=1100&context=buschmarcon)
-[^2]: [www.oecd.org/ireland/47877738.pdf ](http://www.oecd.org/ireland/47877738.pdf)
+[^1]: [arrow.dit.ie/cgi/viewcontent.cgi?article=1100&context=buschmarcon](https://arrow.dit.ie/cgi/viewcontent.cgi?article=1100&context=buschmarcon)
+[^2]: [www.oecd.org/ireland/47877738.pdf ](https://www.oecd.org/ireland/47877738.pdf)
