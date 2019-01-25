@@ -1,6 +1,8 @@
 /* Header
    ========================================================================== */
-
+.mast-logo.mast-logo--h .mast-logo__image {
+  height: 2.5rem;
+}
 .page__header {
   position: relative;
   z-index: 100000;
@@ -12,7 +14,7 @@
     @extend .clearfix, .row, .row--centered;
   }
   @include media(medium-up) {
-    padding: ($global-spacing * 2) 0;
+    padding: ($global-spacing * 1.5) 0;
   }
 }
 
