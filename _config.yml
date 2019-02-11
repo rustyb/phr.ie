@@ -11,7 +11,7 @@ email: info@phr.ie
 description: > # this means to ignore newlines until "baseurl:"
   Panacea Research providing market intelligence to a variety of sectors including energy development and public health infrastructure.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://www.phr.ie/" # the base hostname & protocol for your site
+url: "https://www.phr.ie/" # the base hostname & protocol for your site
 twitter_username: rusty1052
 github_username:  rustyb
 
