@@ -16,14 +16,25 @@ twitter_username: rusty1052
 github_username:  rustyb
 
 # Build settings
-markdown: kramdown
+# markdown: kramdown
 
 permalink: pretty
 
 source: app
 future: true
 
-exclude: [node_modules, jekyll, etc, bower_components, src, gulpfile.js, bower.json, package.json, set_up_db_for_census.md]
+exclude: 
+  - node_modules
+  - jekyll
+  - etc
+  - bower_components
+  - src
+  - gulpfile.js
+  - bower.json 
+  - package.json
+  - .jekyll-cache
+  - .ruby-version
+  - set_up_db_for_census.md
 
 defaults:
   -
