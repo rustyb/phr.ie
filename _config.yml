@@ -29,6 +29,15 @@ defaults:
   -
     scope:
       path: "" # an empty string here means all files in the project
-      tyoe: "posts"
+      type: "posts"
     values:
       author: "PHR Team"
+
+plugins:
+  - jekyll-include-cache
+  - jekyll-commonmark
+
+markdown: CommonMark
+commonmark:
+  options: ["SMART", "FOOTNOTES"]
+  extensions: ["strikethrough", "autolink", "table"]
