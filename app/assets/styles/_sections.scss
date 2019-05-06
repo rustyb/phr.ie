@@ -666,3 +666,15 @@ a.dark:hover,
   }
   
 }
+
+.promo-limiter {
+  @extend .row, .row--centered;
+  background: #4fca9e;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #30ad81;
+  a {
+    color: #fff;
+    font-weight: 400;
+  }
+}
