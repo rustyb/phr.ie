@@ -26,6 +26,10 @@ title: Blog
 			<a class="button success button--primary-bounded" href="{{post.url |prepend: site.baseurl}}#title">Continue Reading</a>
 		</div>
 	</div>
+	{% if post.image contains '/assets/graphics/content/' %}
+	<div class="blog-item-image image-right" style="background-image:url({{post.image | prepend: site.baseurl}})"></div>
+	{% else %}
 	<div class="blog-item-image image-right" style="background-image:url({{post.image | prepend: '/img/' | prepend: site.baseurl}})"></div>
+	{% endif %}
 </article>
 {% endfor %}
